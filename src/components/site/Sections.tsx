@@ -101,7 +101,7 @@ export function WelcomeSection() {
 /** 4.4 Event / Schedule */
 export function EventSection() {
   const [day, setDay] = useState(0);
-  const active = wedding.days[day];
+  const active = wedding.days[day] ?? wedding.days[0]!;
 
   function addToCalendar() {
     const dt = new Date(wedding.date);
@@ -221,8 +221,8 @@ export function GallerySection() {
             <X className="h-6 w-6" />
           </button>
           <img
-            src={photos[open].src}
-            alt={photos[open].caption}
+            src={photos[open]!.src}
+            alt={photos[open]!.caption}
             className="max-h-[80vh] w-auto rounded-xl object-contain"
           />
         </div>

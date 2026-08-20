@@ -81,7 +81,7 @@ export function WishingWallSection() {
 export function RsvpSection() {
   const [attending, setAttending] = useState<"yes" | "no" | null>(null);
   const [form, setForm] = useState({ name: "", contact: "", guests: "0", diet: "", note: "" });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<{ attending?: string; name?: string; contact?: string }>({});
   const [state, setState] = useState<"idle" | "sending" | "done">("idle");
 
   function set(k: keyof typeof form, v: string) {
@@ -91,10 +91,10 @@ export function RsvpSection() {
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    const next: Record<string, string> = {};
-    if (!attending) next.attending = "Please let us know if you can make it.";
-    if (!form.name.trim()) next.name = "Your name is required.";
-    if (!form.contact.trim()) next.contact = "A phone or email is required.";
+    const next: { attending?: string; name?: string; contact?: string } = {};
+    if (!attending) next["attending"] = "Please let us know if you can make it.";
+    if (!form.name.trim()) next["name"] = "Your name is required.";
+    if (!form.contact.trim()) next["contact"] = "A phone or email is required.";
     setErrors(next);
     if (Object.keys(next).length) return;
     setState("sending");
@@ -147,15 +147,15 @@ export function RsvpSection() {
                 </button>
               ))}
             </div>
-            {errors.attending && <p className="text-xs text-destructive">{errors.attending}</p>}
+            {errors["attending"] && <p className="text-xs text-destructive">{errors["attending"]}</p>}
 
             <div>
               <input value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Full name" className={field} />
-              {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
+              {errors["name"] && <p className="mt-1 text-xs text-destructive">{errors["name"]}</p>}
             </div>
             <div>
               <input value={form.contact} onChange={(e) => set("contact", e.target.value)} placeholder="Phone or email" className={field} />
-              {errors.contact && <p className="mt-1 text-xs text-destructive">{errors.contact}</p>}
+              {errors["contact"] && <p className="mt-1 text-xs text-destructive">{errors["contact"]}</p>}
             </div>
 
             {attending === "yes" && (
