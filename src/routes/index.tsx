@@ -1,24 +1,73 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { wedding } from "@/data/wedding";
+import { PhoneFrame } from "@/components/site/PhoneFrame";
+import { OpeningAnimation, InvitationGate } from "@/components/site/Opening";
+import { MusicToggle } from "@/components/site/MusicToggle";
+import {
+  WelcomeSection,
+  EventSection,
+  GallerySection,
+  FamilySection,
+  ThankYouSection,
+} from "@/components/site/Sections";
+import { WishingWallSection, RsvpSection } from "@/components/site/Interactive";
+import { TravelSection, ContactSection } from "@/components/site/Utility";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const title = `${wedding.couple.partnerA} & ${wedding.couple.partnerB} — ${wedding.dateLabel}`;
+const description = `You're invited to the wedding of ${wedding.couple.partnerA} and ${wedding.couple.partnerB} in ${wedding.city}. Schedule, travel, stay and RSVP in one place.`;
+
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: Invitation,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+type Stage = "opening" | "gate" | "site";
+
+function Invitation() {
+  const [stage, setStage] = useState<Stage>("opening");
+  const [music, setMusic] = useState(false);
+  const seen = useRef(false);
+
+  useEffect(() => {
+    seen.current = sessionStorage.getItem("dy-opened") === "1";
+    if (seen.current) setStage("site");
+  }, []);
+
+  function openSite() {
+    sessionStorage.setItem("dy-opened", "1");
+    setStage("site");
+    setMusic(true);
+  }
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <PhoneFrame>
+      <main className="relative min-h-[100svh] bg-background">
+        <WelcomeSection />
+        <EventSection />
+        {wedding.sections.gallery && <GallerySection />}
+        {wedding.sections.family && <FamilySection />}
+        {wedding.sections.wishes && <WishingWallSection />}
+        {wedding.sections.rsvp && <RsvpSection />}
+        {wedding.sections.travel && <TravelSection />}
+        {wedding.sections.contact && <ContactSection />}
+        <ThankYouSection />
+
+        {stage === "site" && <MusicToggle on={music} onToggle={() => setMusic((m) => !m)} />}
+        {stage === "gate" && <InvitationGate onOpen={openSite} />}
+        {stage === "opening" && (
+          <OpeningAnimation fast={seen.current} onDone={() => setStage(seen.current ? "site" : "gate")} />
+        )}
+      </main>
+    </PhoneFrame>
   );
 }
