@@ -16,7 +16,7 @@ export const wedding = {
   invitationLine: "Two families, one celebration — by the lake in Udaipur.",
   welcome: {
     headline: "We're getting married",
-    heroImage: hero,
+    heroImage: "/udaipur_venue_art.png",
     countdown: true,
   },
   sections: {

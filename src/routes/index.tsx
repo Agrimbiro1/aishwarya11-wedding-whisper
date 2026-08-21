@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { wedding } from "@/data/wedding";
 import { PhoneFrame } from "@/components/site/PhoneFrame";
-import { OpeningAnimation, InvitationGate } from "@/components/site/Opening";
+import { VideoIntroPlayer, InvitationGate } from "@/components/site/Opening";
 import { MusicToggle } from "@/components/site/MusicToggle";
 import {
   WelcomeSection,
@@ -31,41 +31,71 @@ export const Route = createFileRoute("/")({
   component: Invitation,
 });
 
-type Stage = "opening" | "gate" | "site";
+type Stage = "gate" | "video" | "site";
 
 function Invitation() {
-  const [stage, setStage] = useState<Stage>("opening");
+  const [stage, setStage] = useState<Stage>("gate");
   const [music, setMusic] = useState(false);
-  const seen = useRef(false);
 
   useEffect(() => {
-    seen.current = sessionStorage.getItem("dy-opened") === "1";
-    if (seen.current) setStage("site");
+    const seen = sessionStorage.getItem("dy-opened") === "1";
+    if (seen) setStage("site");
   }, []);
 
-  function openSite() {
+  useEffect(() => {
+    if (stage !== "site") {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [stage]);
+
+  function handleOpenGate() {
     sessionStorage.setItem("dy-opened", "1");
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setStage("site");
+      setMusic(true);
+    } else {
+      setStage("video");
+    }
+  }
+
+  function handleVideoDone() {
     setStage("site");
     setMusic(true);
   }
 
-  return (
-    <PhoneFrame>
-      <main className="relative min-h-[100svh] bg-background">
-        <WelcomeSection />
-        <EventSection />
-        {wedding.sections.gallery && <GallerySection />}
-        {wedding.sections.family && <FamilySection />}
-        {wedding.sections.wishes && <WishingWallSection />}
-        {wedding.sections.rsvp && <RsvpSection />}
-        {wedding.sections.travel && <TravelSection />}
-        {wedding.sections.contact && <ContactSection />}
-        <ThankYouSection />
+  const isSite = stage === "site";
 
-        {stage === "site" && <MusicToggle on={music} onToggle={() => setMusic((m) => !m)} />}
-        {stage === "gate" && <InvitationGate onOpen={openSite} />}
-        {stage === "opening" && (
-          <OpeningAnimation fast={seen.current} onDone={() => setStage(seen.current ? "site" : "gate")} />
+  return (
+    <PhoneFrame scrollable={isSite}>
+      <main
+        className={`relative bg-background ${
+          isSite ? "min-h-[100svh]" : "h-[100svh] overflow-hidden touch-none"
+        }`}
+      >
+        {stage === "gate" && <InvitationGate onOpen={handleOpenGate} />}
+        {stage === "video" && <VideoIntroPlayer onDone={handleVideoDone} />}
+
+        {isSite && (
+          <>
+            <WelcomeSection />
+            <EventSection />
+            {wedding.sections.gallery && <GallerySection />}
+            {wedding.sections.family && <FamilySection />}
+            {wedding.sections.wishes && <WishingWallSection />}
+            {wedding.sections.rsvp && <RsvpSection />}
+            {wedding.sections.travel && <TravelSection />}
+            {wedding.sections.contact && <ContactSection />}
+            <ThankYouSection />
+            <MusicToggle on={music} onToggle={() => setMusic((m) => !m)} />
+          </>
         )}
       </main>
     </PhoneFrame>
