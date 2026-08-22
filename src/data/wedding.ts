@@ -3,6 +3,7 @@ import gallery1 from "@/assets/gallery-1.jpg";
 import gallery2 from "@/assets/gallery-2.jpg";
 import gallery3 from "@/assets/gallery-3.jpg";
 import gallery4 from "@/assets/gallery-4.jpg";
+import gallery5 from "@/assets/gallery-5.jpg";
 
 /**
  * Single source of content for the guest microsite.
@@ -51,9 +52,10 @@ export const wedding = {
     title: "Our Story",
     photos: [
       { src: gallery1, caption: "Where it began" },
-      { src: gallery2, caption: "The proposal" },
+      { src: gallery2, caption: "The sweet proposal" },
       { src: gallery3, caption: "Planning the table" },
       { src: gallery4, caption: "Us, mostly laughing" },
+      { src: gallery5, caption: "Always together" },
     ],
   },
   families: [

@@ -10,6 +10,13 @@ import {
   MapPin,
   CalendarPlus,
   X,
+  Coffee,
+  Heart,
+  Sparkles,
+  Wine,
+  Compass,
+  Footprints,
+  Navigation,
 } from "lucide-react";
 import { wedding } from "@/data/wedding";
 import { Reveal } from "./Reveal";
@@ -20,6 +27,15 @@ import {
   PalmLeafAccent,
   EveningStarAccent,
   DayHeadingFlourish,
+  BirdSketch,
+  ButterflySketch,
+  FloatingPetalsSketch,
+  LeafClusterDoodle,
+  FootprintsDoodle,
+  CompassDoodle,
+  TwistingVinePath,
+  ExtendedBranchLeftToRight,
+  ExtendedBranchRightToLeft,
 } from "./EventAccents";
 
 const ICONS: Record<string, typeof Flower2> = {
@@ -329,44 +345,248 @@ export function EventSection() {
   );
 }
 
-/** 4.5 Gallery */
+/** 4.5 Gallery — Single-Line Olive-Green Journey Map & Organic Photo Vignettes */
 export function GallerySection() {
   const [open, setOpen] = useState<number | null>(null);
   const photos = wedding.gallery.photos;
 
-  return (
-    <section className="py-20">
-      <Reveal>
-        <SectionTitle eyebrow="A few favourites" title={wedding.gallery.title} />
-      </Reveal>
+  // Milestone icon mapping per photo vignette
+  const MILESTONE_ICONS = [Coffee, Gem, Wine, Sparkles, Heart];
 
-      <div className="no-scrollbar mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2">
-        {photos.map((p, i) => (
-          <Reveal key={p.caption} delay={i * 80} className="shrink-0 snap-center">
-            <button onClick={() => setOpen(i)} className="block w-[70vw] max-w-[260px] text-left">
-              <img
-                src={p.src}
-                alt={p.caption}
-                loading="lazy"
-                width={900}
-                height={1125}
-                className="h-[340px] w-full rounded-2xl object-cover"
-              />
-              <p className="mt-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">{p.caption}</p>
-            </button>
-          </Reveal>
-        ))}
+  // Formatted captions with serif + script pairing
+  const FORMATTED_CAPTIONS = [
+    { chapter: "CHAPTER I", main: "Where", script: "it", tail: "Began" },
+    { chapter: "CHAPTER II", main: "The", script: "sweet", tail: "Proposal" },
+    { chapter: "CHAPTER III", main: "Planning", script: "the", tail: "Table" },
+    { chapter: "CHAPTER IV", main: "Us,", script: "mostly", tail: "Laughing" },
+    { chapter: "CHAPTER V", main: "Always", script: "& forever", tail: "Together" },
+  ];
+
+  // Organic rotations & deckle shapes per photo card
+  const CARD_CONFIGS = [
+    { rotation: "rotate-[-3.5deg]", outerShape: "rounded-[2.2rem_1.2rem_2.5rem_1.4rem]", innerShape: "rounded-[1.8rem_0.9rem_2.1rem_1.1rem]" },
+    { rotation: "rotate-[3.2deg]", outerShape: "rounded-[1.3rem_2.4rem_1.2rem_2.5rem]", innerShape: "rounded-[1rem_2rem_0.9rem_2.1rem]" },
+    { rotation: "rotate-[-2deg]", outerShape: "rounded-[2.4rem_1.1rem_2.2rem_1.3rem]", innerShape: "rounded-[2rem_0.8rem_1.8rem_1rem]" },
+    { rotation: "rotate-[3.8deg]", outerShape: "rounded-[1.2rem_2.3rem_1.4rem_2.6rem]", innerShape: "rounded-[0.9rem_1.9rem_1.1rem_2.2rem]" },
+    { rotation: "rotate-[-2.8deg]", outerShape: "rounded-[2.1rem_1.4rem_2.3rem_1.2rem]", innerShape: "rounded-[1.7rem_1.1rem_1.9rem_0.9rem]" },
+  ];
+
+  // Handwritten journal micro-annotations between chapters
+  const JOURNAL_ANNOTATIONS = [
+    { text: "next chapter ⟶ ♡", rotation: "rotate-[-5deg]", position: "right-4 top-0" },
+    { text: "our favourite day ♡", rotation: "rotate-[4deg]", position: "left-4 top-0" },
+    { text: "the best memories...", rotation: "rotate-[-3deg]", position: "right-4 top-0" },
+    { text: "forever & always... ♡", rotation: "rotate-[5deg]", position: "left-4 top-0" },
+  ];
+
+  return (
+    <section className="relative px-5 py-24 text-center overflow-hidden bg-background">
+      {/* Background Olive-Green Line Art Botanical Accent Vines */}
+      <div className="absolute top-10 left-3 opacity-20 pointer-events-none z-0">
+        <BotanicalSprigLeft className="w-36 h-48 text-primary" />
+      </div>
+      <div className="absolute bottom-10 right-3 opacity-20 pointer-events-none z-0">
+        <BotanicalSprigRight className="w-36 h-48 text-primary" />
       </div>
 
+      {/* Integrated Section Header */}
+      <Reveal>
+        <div className="relative z-10 flex flex-col items-center">
+          <p className="text-[0.66rem] uppercase tracking-[0.32em] text-accent/90 font-medium">
+            A FEW FAVOURITES
+          </p>
+          <h2 className="mt-1 font-script text-5xl md:text-6xl text-primary font-normal leading-tight tracking-wide">
+            {wedding.gallery.title}
+          </h2>
+          <Ornament className="mx-auto mt-2" />
+        </div>
+      </Reveal>
+
+      {/* Single-Line Olive-Green Winding Journey Container */}
+      <div className="relative z-10 mx-auto mt-14 flex w-full max-w-sm flex-col items-center gap-12">
+        {photos.map((p, i) => {
+          const IconComponent = MILESTONE_ICONS[i % MILESTONE_ICONS.length] || Coffee;
+          const cap = FORMATTED_CAPTIONS[i % FORMATTED_CAPTIONS.length] || {
+            chapter: `MOMENT 0${i + 1}`,
+            main: p.caption,
+            script: "and",
+            tail: "More",
+          };
+          const cfg = CARD_CONFIGS[i % CARD_CONFIGS.length] || CARD_CONFIGS[0]!;
+          const isLeft = i % 2 === 0;
+
+          return (
+            <div key={p.caption} className="relative flex flex-col items-center w-full">
+              <Reveal delay={i * 90} className="w-full">
+                <div
+                  className={`relative flex w-full ${
+                    isLeft ? "justify-start pl-2" : "justify-end pr-2"
+                  }`}
+                >
+                  {/* Thin Single-Line Olive-Green Waypoint Stamp sitting directly ON path */}
+                  <div
+                    className={`absolute top-[-1.25rem] z-30 flex h-10 w-10 items-center justify-center rounded-full border border-primary/50 bg-card/95 text-primary shadow-xs ${
+                      isLeft ? "left-7" : "right-7"
+                    }`}
+                  >
+                    <IconComponent className="h-4.5 w-4.5" />
+                  </div>
+
+                  {/* Main Photo Anchor Container */}
+                  <div className={`relative w-[88%] max-w-[270px] ${cfg.rotation} cursor-pointer`}>
+                    {/* Integrated Soft Paper Shadow (Illustration Lighting World) */}
+                    <div
+                      className={`absolute inset-1.5 bg-primary/15 blur-md translate-y-2 -z-1 ${cfg.outerShape}`}
+                    />
+
+                    {/* Organic Paper Deckle Frame */}
+                    <button
+                      onClick={() => setOpen(i)}
+                      className={`group relative block w-full bg-card/95 p-2 pb-4 text-center border-2 border-primary/30 shadow-xs transition-transform duration-300 active:scale-[0.98] hover:rotate-0 ${cfg.outerShape}`}
+                    >
+                      {/* Image Wrapper with Color Harmonization Tint */}
+                      <div className={`relative w-full h-[215px] overflow-hidden ${cfg.innerShape}`}>
+                        <img
+                          src={p.src}
+                          alt={p.caption}
+                          loading="lazy"
+                          width={900}
+                          height={1125}
+                          className="h-full w-full object-cover"
+                        />
+                        {/* Subtle Warm Color Harmonization Overlay Tint */}
+                        <div className="absolute inset-0 bg-amber-100/15 mix-blend-soft-light pointer-events-none" />
+                      </div>
+
+                      {/* Refined Serif + Script Caption Pairing */}
+                      <div className="mt-3 text-center">
+                        <p className="text-[0.62rem] uppercase tracking-[0.22em] text-accent font-medium">
+                          {cap.chapter}
+                        </p>
+                        <h3 className="mt-0.5 font-display text-2xl text-foreground font-normal tracking-wide">
+                          {cap.main}{" "}
+                          <span className="font-script text-2xl text-primary mx-0.5 font-normal">
+                            {cap.script}
+                          </span>{" "}
+                          {cap.tail}
+                        </h3>
+                      </div>
+                    </button>
+
+                    {/* Asymmetric Overlapping Corner Linework (Z-30) */}
+                    <svg
+                      viewBox="0 0 60 60"
+                      className={`absolute -top-3.5 ${
+                        isLeft ? "-left-3.5" : "-right-3.5 scale-x-[-1]"
+                      } w-14 h-14 text-primary fill-primary/25 stroke-current z-30 pointer-events-none filter drop-shadow-xs`}
+                      strokeWidth="1.3"
+                      aria-hidden="true"
+                    >
+                      <path d="M10 40 C 15 25, 25 15, 45 10 C 35 25, 25 35, 10 40 Z" />
+                      <path d="M18 28 C 22 18, 30 14, 38 10" />
+                      <path d="M12 36 C 20 32, 28 24, 32 16" />
+                    </svg>
+
+                    {/* Extended Botanical Vine Branch Connecting Card i to Card i+1 (Z-20) */}
+                    {i < photos.length - 1 && (
+                      isLeft ? (
+                        <ExtendedBranchLeftToRight className="absolute -bottom-28 -left-4 z-20 opacity-80" />
+                      ) : (
+                        <ExtendedBranchRightToLeft className="absolute -bottom-28 -right-4 z-20 opacity-80" />
+                      )
+                    )}
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Decorative Twisting Vine Path + Embedded Milestone Markers & Handwritten Annotations */}
+              {i < photos.length - 1 && (
+                <div className="relative w-full my-2 flex flex-col items-center justify-center min-h-[4.8rem]">
+                  {/* Handwritten Journal Micro-Annotation */}
+                  {JOURNAL_ANNOTATIONS[i] && (
+                    <div
+                      className={`absolute z-20 pointer-events-none ${JOURNAL_ANNOTATIONS[i].position} ${JOURNAL_ANNOTATIONS[i].rotation} opacity-80`}
+                    >
+                      <span className="font-script text-lg text-primary font-normal leading-none select-none">
+                        {JOURNAL_ANNOTATIONS[i].text}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Standalone Illustrated Journey Filler Moment per Gap */}
+                  {i === 0 && (
+                    <div className="absolute top-1/2 -translate-y-1/2 right-10 z-10 pointer-events-none rotate-6">
+                      <BirdSketch className="w-9 h-7 text-primary/70" />
+                    </div>
+                  )}
+                  {i === 1 && (
+                    <div className="absolute top-1/2 -translate-y-1/2 left-10 z-10 pointer-events-none -rotate-12">
+                      <ButterflySketch className="w-8 h-8 text-primary/70" />
+                    </div>
+                  )}
+                  {i === 2 && (
+                    <div className="absolute top-1/2 -translate-y-1/2 right-10 z-10 pointer-events-none rotate-12">
+                      <FloatingPetalsSketch className="w-10 h-10 text-primary/60" />
+                    </div>
+                  )}
+                  {i >= 3 && (
+                    <div className="absolute top-1/2 -translate-y-1/2 left-10 z-10 pointer-events-none rotate-6">
+                      <ButterflySketch className="w-8 h-8 text-primary/60" />
+                    </div>
+                  )}
+
+                  {/* Mid-Path Milestone Markers (Footprints & Mini Compass) */}
+                  {i === 0 && (
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none opacity-80 rotate-12">
+                      <FootprintsDoodle className="w-5 h-5 text-primary/70" />
+                    </div>
+                  )}
+                  {i === 1 && (
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none opacity-80 -rotate-6">
+                      <CompassDoodle className="w-5.5 h-5.5 text-primary/75" />
+                    </div>
+                  )}
+                  {i === 2 && (
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none opacity-80 rotate-45">
+                      <FootprintsDoodle className="w-5 h-5 text-accent/80" />
+                    </div>
+                  )}
+                  {i >= 3 && (
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none opacity-80">
+                      <CompassDoodle className="w-5.5 h-5.5 text-primary/75" />
+                    </div>
+                  )}
+
+                  {/* Scattered Leaf Cluster Doodles inside & outside path curve */}
+                  <div className={`absolute ${isLeft ? "left-12 top-1" : "right-12 top-1"} pointer-events-none opacity-75 -rotate-18`}>
+                    <LeafClusterDoodle className="w-5.5 h-5.5 text-primary/60" />
+                  </div>
+                  <div className={`absolute ${isLeft ? "right-14 bottom-1" : "left-14 bottom-1"} pointer-events-none opacity-75 rotate-28`}>
+                    <LeafClusterDoodle className="w-4.5 h-4.5 text-accent/80" />
+                  </div>
+
+                  {/* Decorative Twisting Vine Path Line */}
+                  <TwistingVinePath isLeft={isLeft} />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Fullscreen Photo Modal */}
       {open !== null && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-ink/90 p-4" onClick={() => setOpen(null)}>
-          <button className="absolute right-4 top-4 text-background" aria-label="Close">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/90 p-4 backdrop-blur-xs"
+          onClick={() => setOpen(null)}
+        >
+          <button className="absolute right-4 top-4 text-background p-2" aria-label="Close">
             <X className="h-6 w-6" />
           </button>
           <img
             src={photos[open]!.src}
             alt={photos[open]!.caption}
-            className="max-h-[80vh] w-auto rounded-xl object-contain"
+            className="max-h-[82vh] w-auto rounded-xl object-contain shadow-2xl"
           />
         </div>
       )}
