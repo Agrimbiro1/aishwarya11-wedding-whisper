@@ -20,21 +20,23 @@ export function Ornament({ className = "" }: { className?: string }) {
 export function SectionTitle({
   eyebrow,
   title,
+  className = "",
 }: {
   eyebrow?: string;
   title: string;
+  className?: string;
 }) {
   return (
-    <header className="flex flex-col items-center text-center">
+    <header className={`flex flex-col items-center text-center ${className}`}>
       {eyebrow && (
-        <p className="text-[0.68rem] uppercase tracking-[0.32em] text-muted-foreground">
+        <p className="text-[0.66rem] uppercase tracking-[0.32em] text-accent/90 font-medium">
           {eyebrow}
         </p>
       )}
-      <h2 className="mt-2 font-display text-[2rem] leading-tight text-foreground">
+      <h2 className="mt-1 font-script text-5xl md:text-6xl text-primary font-normal leading-tight tracking-wide">
         {title}
       </h2>
-      <Ornament className="mt-3" />
+      <Ornament className="mx-auto mt-2" />
     </header>
   );
 }

@@ -36,6 +36,12 @@ import {
   TwistingVinePath,
   ExtendedBranchLeftToRight,
   ExtendedBranchRightToLeft,
+  LotusMotif,
+  DiyaMotif,
+  KalashMotif,
+  MandalaPaisleyDivider,
+  FamilySectionEndCap,
+  PaperGrainOverlay,
 } from "./EventAccents";
 
 const ICONS: Record<string, typeof Flower2> = {
@@ -259,12 +265,13 @@ export function EventSection() {
             height={200}
             className="h-32 w-auto object-contain opacity-85"
           />
-          <h2 className="mt-4 font-script text-5xl md:text-6xl text-primary font-normal leading-tight tracking-wide">
+          <p className="mt-4 text-[0.66rem] uppercase tracking-[0.32em] text-accent/90 font-medium">
+            WHAT WE HAVE PLANNED FOR YOU
+          </p>
+          <h2 className="mt-1 font-script text-5xl md:text-6xl text-primary font-normal leading-tight tracking-wide">
             Order of the Day
           </h2>
-          <p className="mt-2 text-[0.65rem] uppercase tracking-[0.32em] text-muted-foreground font-medium">
-            What we have planned for you
-          </p>
+          <Ornament className="mx-auto mt-2" />
 
           <button
             onClick={addToCalendar}
@@ -594,24 +601,127 @@ export function GallerySection() {
   );
 }
 
-/** 4.6 Family */
+/** 4.6 Family — Harmonized Sunset Gold & Terracotta Palette matching Top Artwork */
 export function FamilySection() {
   return (
-    <section className="px-6 py-20">
+    <section className="relative bg-background pt-24 pb-20 overflow-hidden text-center">
+      {/* Subtle Warm Printed Paper Grain & Linen Texture Overlay */}
+      <PaperGrainOverlay />
+
+      {/* Integrated Section Header — Styled with Warm Sunset-Gold Accents matching Top Painting */}
       <Reveal>
-        <SectionTitle eyebrow="With the blessings of" title="Our Families" />
+        <div className="relative z-10 flex flex-col items-center px-6">
+          <p className="text-[0.66rem] uppercase tracking-[0.34em] text-[#b88636] font-medium">
+            WITH THE BLESSINGS OF
+          </p>
+          <h2 className="mt-1 font-script text-5xl md:text-6xl text-primary font-normal leading-tight tracking-wide">
+            Our Families
+          </h2>
+          <Ornament className="mx-auto mt-2 text-[#b88636]/80" />
+        </div>
       </Reveal>
-      <div className="mx-auto mt-10 max-w-sm space-y-8">
-        {wedding.families.map((f, i) => (
-          <Reveal key={f.names} delay={i * 120}>
-            <div className="text-center">
-              <p className="text-[0.62rem] uppercase tracking-[0.3em] text-accent">{f.label}</p>
-              <h3 className="mt-2 font-display text-2xl text-foreground">{f.names}</h3>
-              <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">{f.note}</p>
-              {i === 0 && <Ornament className="mx-auto mt-8 opacity-60" />}
-            </div>
-          </Reveal>
-        ))}
+
+      {/* Watercolor Venue Illustration with Soft 360-Degree Vignette Mask & Blended Edges */}
+      <Reveal>
+        <div className="relative w-full max-w-md mx-auto h-56 sm:h-64 my-8 px-4">
+          <div
+            className="relative w-full h-full overflow-hidden"
+            style={{
+              maskImage: "radial-gradient(ellipse 92% 82% at 50% 50%, black 45%, transparent 100%)",
+              WebkitMaskImage: "radial-gradient(ellipse 92% 82% at 50% 50%, black 45%, transparent 100%)",
+            }}
+          >
+            <img
+              src="/udaipur_family_art.png"
+              alt="Udaipur venue watercolor scene"
+              className="w-full h-full object-cover object-center scale-105"
+              loading="lazy"
+            />
+            {/* Multi-tier Gradient Vignette Overlays for 100% Seamless Paper Melt */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background opacity-90 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background opacity-90 pointer-events-none" />
+          </div>
+        </div>
+      </Reveal>
+
+      {/* Family Details Container Below Artwork */}
+      <div className="relative z-10 px-6 mx-auto max-w-sm flex flex-col items-center text-center">
+        {/* Family Blocks with Sunset-Gold Motifs & Serif + Script Typography */}
+        <div className="w-full space-y-10 sm:space-y-12">
+          {wedding.families.map((f, i) => {
+            // Split name around "&" to apply refined Serif + Calligraphic Script pairing
+            const parts = f.names.split(" & ");
+            const firstName = parts[0] || f.names;
+            const secondName = parts[1] || "";
+
+            // Highlight key emotional words ("joy" / "blessings") with calligraphic script accent (matching Our Story captions)
+            const renderFormattedNote = (noteText: string) => {
+              const wordsToHighlight = ["joy", "blessings"];
+              const regex = new RegExp(`\\b(${wordsToHighlight.join("|")})\\b`, "gi");
+              const noteParts = noteText.split(regex);
+
+              return noteParts.map((part, index) => {
+                if (wordsToHighlight.includes(part.toLowerCase())) {
+                  return (
+                    <span key={index} className="font-script text-xl sm:text-2xl text-primary font-normal mx-0.5 inline-block">
+                      {part}
+                    </span>
+                  );
+                }
+                return <span key={index}>{part}</span>;
+              });
+            };
+
+            return (
+              <Reveal key={f.names} delay={i * 120}>
+                <div className="flex flex-col items-center text-center">
+                  {/* Decorative Sunset-Gold Label Icon (Lotus for Bride, Diya for Groom) */}
+                  <div className="inline-flex items-center justify-center gap-2">
+                    {i === 0 ? (
+                      <LotusMotif className="w-5 h-4 text-[#c28e38]" />
+                    ) : (
+                      <DiyaMotif className="w-5 h-4 text-[#c87d55]" />
+                    )}
+                    <p className="text-[0.62rem] uppercase tracking-[0.28em] text-[#b88636] font-medium">
+                      {f.label}
+                    </p>
+                    {i === 0 ? (
+                      <LotusMotif className="w-5 h-4 text-[#c28e38] scale-x-[-1]" />
+                    ) : (
+                      <DiyaMotif className="w-5 h-4 text-[#c87d55] scale-x-[-1]" />
+                    )}
+                  </div>
+
+                  {/* Refined Serif + Script Name Pairing (matching Our Story captions) */}
+                  <h3 className="mt-2 font-display text-2xl sm:text-[1.75rem] text-foreground font-normal tracking-wide">
+                    {firstName}{" "}
+                    {secondName && (
+                      <>
+                        <span className="font-script text-2xl sm:text-3xl text-primary mx-1 font-normal">
+                          &
+                        </span>{" "}
+                        {secondName}
+                      </>
+                    )}
+                  </h3>
+
+                  {/* Refined Welcome Note with Script Word Highlight */}
+                  <p className="mt-2.5 max-w-xs text-sm leading-relaxed text-muted-foreground font-sans">
+                    {renderFormattedNote(f.note)}
+                  </p>
+
+                  {/* Traditional Sunset-Gold Paisley & Kalash Divider Between Family Blocks */}
+                  {i === 0 && <MandalaPaisleyDivider className="text-[#b88636]" />}
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+
+        {/* Unique Closing Decorative End-Cap Flourish */}
+        <Reveal delay={240}>
+          <FamilySectionEndCap className="mx-auto mt-10 sm:mt-12" />
+        </Reveal>
       </div>
     </section>
   );
@@ -626,9 +736,14 @@ export function ThankYouSection() {
   return (
     <section className="paper px-6 py-24 text-center">
       <Reveal>
-        <Ornament className="mx-auto" />
-        <h2 className="mt-6 font-display text-[2.4rem] leading-tight text-foreground">{names}</h2>
-        <p className="mt-2 text-xs uppercase tracking-[0.28em] text-muted-foreground">{wedding.dateLabel}</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.32em] text-accent/90 font-medium">
+          WITH ALL OUR LOVE
+        </p>
+        <h2 className="mt-1 font-script text-5xl md:text-6xl text-primary font-normal leading-tight tracking-wide">
+          {names}
+        </h2>
+        <Ornament className="mx-auto mt-2" />
+        <p className="mt-4 text-xs uppercase tracking-[0.28em] text-accent font-medium">{wedding.dateLabel}</p>
         <p className="mx-auto mt-6 max-w-xs text-sm leading-relaxed text-muted-foreground">
           {wedding.thankYou.message}
         </p>

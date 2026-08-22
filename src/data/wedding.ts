@@ -66,7 +66,7 @@ export const wedding = {
     },
     {
       label: "Parents of the Groom",
-      names: "Mr. Imran & Mrs. Farah Qureshi",
+      names: "Mr. Arjun & Mrs. Meera Kapoor",
       note: "Your blessings mean everything to us. Thank you for standing with our children.",
     },
   ],

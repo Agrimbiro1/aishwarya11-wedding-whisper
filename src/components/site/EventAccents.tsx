@@ -234,3 +234,142 @@ export function ExtendedBranchRightToLeft({ className = "" }: { className?: stri
     </svg>
   );
 }
+
+/** Traditional Hindu Lotus Flower Line Motif — Bride's Side Symbol */
+export function LotusMotif({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 50 40" className={`w-5 h-4 text-[#c28e38] pointer-events-none ${className}`} {...strokeProps}>
+      {/* Central petal */}
+      <path d="M25 5C20 15 22 26 25 32C28 26 30 15 25 5Z" fill="currentColor" fillOpacity={0.25} strokeWidth="1.2" />
+      {/* Inner side petals */}
+      <path d="M25 10C16 12 12 22 18 32C22 30 24 25 25 20" strokeWidth="1.1" />
+      <path d="M25 10C34 12 38 22 32 32C28 30 26 25 25 20" strokeWidth="1.1" />
+      {/* Outer base petals */}
+      <path d="M18 22C8 24 6 30 12 34C18 34 22 30 24 28" strokeWidth="1" />
+      <path d="M32 22C42 24 44 30 38 34C32 34 28 30 26 28" strokeWidth="1" />
+      {/* Base stem curve */}
+      <path d="M15 34C22 37 28 37 35 34" strokeWidth="1.2" />
+    </svg>
+  );
+}
+
+/** Traditional Hindu Ceremonial Diya Flame Line Motif — Groom's Side Symbol */
+export function DiyaMotif({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 50 40" className={`w-5 h-4 text-[#c87d55] pointer-events-none ${className}`} {...strokeProps}>
+      {/* Diya Base Bowl */}
+      <path d="M8 22C12 32 38 32 42 22C45 22 38 20 25 20C12 20 5 22 8 22Z" fill="currentColor" fillOpacity={0.2} strokeWidth="1.2" />
+      <path d="M12 22C18 26 32 26 38 22" strokeWidth="1" />
+      {/* Flame */}
+      <path d="M25 5C22 11 20 16 25 20C30 16 28 11 25 5Z" fill="#d99138" fillOpacity={0.4} strokeWidth="1.1" />
+      <path d="M25 9C23 13 22 16 25 19" strokeWidth="0.8" opacity={0.8} />
+    </svg>
+  );
+}
+
+/** Traditional Sacred Kalash Line Motif — Indian Wedding Blessing Symbol */
+export function KalashMotif({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 60 60" className={`w-10 h-10 text-[#b88636] pointer-events-none ${className}`} {...strokeProps}>
+      {/* Coconut on Top */}
+      <path d="M30 6C25 12 25 18 30 22C35 18 35 12 30 6Z" fill="currentColor" fillOpacity={0.3} strokeWidth="1.2" />
+      {/* Mango Leaves */}
+      <path d="M30 18C20 12 12 18 18 24C22 22 27 20 30 20Z" fill="currentColor" fillOpacity={0.18} strokeWidth="1" />
+      <path d="M30 18C40 12 48 18 42 24C38 22 33 20 30 20Z" fill="currentColor" fillOpacity={0.18} strokeWidth="1" />
+      {/* Kalash Brass Pot Body */}
+      <path d="M22 24H38L42 28C46 36 44 46 30 46C16 46 14 36 18 28Z" fill="currentColor" fillOpacity={0.22} strokeWidth="1.3" />
+      {/* Neck Band */}
+      <path d="M20 26H40" strokeWidth="1.2" />
+      <path d="M22 28H38" strokeWidth="1" />
+      {/* Sacred Thread (Mauli) Swastik/Band Marks */}
+      <path d="M24 35C30 38 30 38 36 35" strokeWidth="1" opacity={0.7} />
+      {/* Pedestal Base */}
+      <path d="M22 46H38L40 50H20Z" fill="currentColor" fillOpacity={0.25} strokeWidth="1.2" />
+    </svg>
+  );
+}
+
+/** Traditional Paisley & Mandala Horizontal Divider for Indian Wedding Section with Star Tips & Extended Rules */
+export function MandalaPaisleyDivider({ className = "" }: { className?: string }) {
+  return (
+    <div className={`flex items-center justify-center gap-2 sm:gap-3 text-[#b88636] opacity-95 my-10 sm:my-12 w-full max-w-xs sm:max-w-sm mx-auto ${className}`}>
+      {/* Left Extended Paisley Swirl with End Star Flourish */}
+      <svg viewBox="0 0 140 24" className="w-32 sm:w-36 h-5 stroke-current fill-none pointer-events-none" strokeWidth="1.1" strokeLinecap="round">
+        {/* End Star Tip Flourish at Far Left */}
+        <path d="M6 12L10 10L14 12L10 14Z" fill="currentColor" strokeWidth="0.8" />
+        <circle cx="10" cy="12" r="1" fill="currentColor" />
+
+        {/* Extended Dotted Rule */}
+        <path d="M16 12H100" strokeDasharray="3 3" />
+
+        {/* Paisley Swirl Motif */}
+        <path d="M100 12C112 4, 122 6, 126 12C128 16, 124 20, 118 18C113 16, 114 10, 120 10" />
+        <circle cx="120" cy="10" r="1.5" fill="currentColor" />
+      </svg>
+
+      {/* Central Sacred Kalash Icon */}
+      <KalashMotif className="w-8 h-8 shrink-0 text-[#b88636]" />
+
+      {/* Right Extended Paisley Swirl with End Star Flourish */}
+      <svg viewBox="0 0 140 24" className="w-32 sm:w-36 h-5 stroke-current fill-none pointer-events-none scale-x-[-1]" strokeWidth="1.1" strokeLinecap="round">
+        {/* End Star Tip Flourish at Far Right */}
+        <path d="M6 12L10 10L14 12L10 14Z" fill="currentColor" strokeWidth="0.8" />
+        <circle cx="10" cy="12" r="1" fill="currentColor" />
+
+        {/* Extended Dotted Rule */}
+        <path d="M16 12H100" strokeDasharray="3 3" />
+
+        {/* Paisley Swirl Motif */}
+        <path d="M100 12C112 4, 122 6, 126 12C128 16, 124 20, 118 18C113 16, 114 10, 120 10" />
+        <circle cx="120" cy="10" r="1.5" fill="currentColor" />
+      </svg>
+    </div>
+  );
+}
+
+/** Unique Decorative Closing End-Cap Flourish for Family Section */
+export function FamilySectionEndCap({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 180 30"
+      className={`w-44 h-7 text-[#b88636]/85 fill-none stroke-current pointer-events-none ${className}`}
+      strokeWidth="1.1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {/* Left Tapering Rule */}
+      <path d="M10 15H55" strokeDasharray="3 3" />
+      {/* Left Swirl */}
+      <path d="M55 15C62 9 68 11 72 15C74 18 72 21 68 20C64 19 65 14 70 14" />
+      <circle cx="70" cy="14" r="1.2" fill="currentColor" />
+
+      {/* Central Lotus End-Cap Blossom Motif */}
+      <path d="M90 6C86 13 88 20 90 24C92 20 94 13 90 6Z" fill="currentColor" fillOpacity={0.3} strokeWidth="1" />
+      <path d="M90 10C82 12 79 20 84 24" strokeWidth="0.9" />
+      <path d="M90 10C98 12 101 20 96 24" strokeWidth="0.9" />
+
+      {/* Right Swirl */}
+      <path d="M125 15C118 9 112 11 108 15C106 18 108 21 112 20C116 19 115 14 110 14" />
+      <circle cx="110" cy="14" r="1.2" fill="currentColor" />
+      {/* Right Tapering Rule */}
+      <path d="M125 15H170" strokeDasharray="3 3" />
+    </svg>
+  );
+}
+
+/** Subtle Warm Paper Grain & Linen Tactile Texture Overlay */
+export function PaperGrainOverlay({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={`pointer-events-none absolute inset-0 h-full w-full opacity-[0.045] mix-blend-multiply ${className}`}
+      aria-hidden="true"
+    >
+      <filter id="paper-tactile-grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" />
+      </filter>
+      <rect width="100%" height="100%" filter="url(#paper-tactile-grain)" />
+    </svg>
+  );
+}
