@@ -10,7 +10,7 @@ import gallery5 from "@/assets/gallery-5.jpg";
  * In the full product this object is produced by the couple dashboard.
  */
 export const wedding = {
-  couple: { partnerA: "Aanya", partnerB: "Rehan", monogram: "A&R" },
+  couple: { partnerA: "Aanya", partnerB: "Rahul", monogram: "A&R" },
   date: "2026-12-12T16:30:00+05:30",
   dateLabel: "Saturday, 12 December 2026",
   city: "Udaipur, Rajasthan",
@@ -78,14 +78,14 @@ export const wedding = {
     transport:
       "Udaipur (UDR) airport is 45 minutes from the venue. Shuttles run from the two hotels below at 15:15 and 15:45 on the wedding day. Parking is available at the north gate.",
     hotels: [
-      { name: "The Lily Haveli", desc: "Heritage rooms overlooking the lake.", distance: "5 min walk", code: "AANYAREHAN10", url: "https://example.com" },
+      { name: "The Lily Haveli", desc: "Heritage rooms overlooking the lake.", distance: "5 min walk", code: "AANYARAHUL10", url: "https://example.com" },
       { name: "Amara Residency", desc: "Comfortable, modern and family friendly.", distance: "10 min drive", code: "YESH2026", url: "https://example.com" },
     ],
     tips: "December evenings are cool by the water — bring a shawl. Book early, rooms in the old city fill up fast.",
   },
   contacts: [
     { role: "Bride", name: "Aanya", phone: "+919876543210", whatsapp: true, email: "aanya@example.com" },
-    { role: "Groom", name: "Rehan", phone: "+919876543211", whatsapp: true },
+    { role: "Groom", name: "Rahul", phone: "+919876543211", whatsapp: true },
     { role: "Wedding Coordinator", name: "Priya Nair", phone: "+919876543212", whatsapp: true, email: "priya@example.com" },
   ],
   thankYou: {

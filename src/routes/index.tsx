@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { wedding } from "@/data/wedding";
 import { PhoneFrame } from "@/components/site/PhoneFrame";
-import { VideoIntroPlayer, InvitationGate } from "@/components/site/Opening";
+import { CurtainOpeningAnimation, InvitationGate, GardenGateSaveTheDateTransition } from "@/components/site/Opening";
 import { MusicToggle } from "@/components/site/MusicToggle";
 import {
   WelcomeSection,
@@ -31,16 +31,12 @@ export const Route = createFileRoute("/")({
   component: Invitation,
 });
 
-type Stage = "gate" | "video" | "site";
+type Stage = "gate" | "save-the-date" | "site";
 
 function Invitation() {
   const [stage, setStage] = useState<Stage>("gate");
+  const [showCurtain, setShowCurtain] = useState(true);
   const [music, setMusic] = useState(false);
-
-  useEffect(() => {
-    const seen = sessionStorage.getItem("dy-opened") === "1";
-    if (seen) setStage("site");
-  }, []);
 
   useEffect(() => {
     if (stage !== "site") {
@@ -56,17 +52,17 @@ function Invitation() {
     };
   }, [stage]);
 
-  function handleOpenGate() {
-    sessionStorage.setItem("dy-opened", "1");
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setStage("site");
-      setMusic(true);
-    } else {
-      setStage("video");
-    }
+  function handleCurtainDone() {
+    setShowCurtain(false);
   }
 
-  function handleVideoDone() {
+  function handleOpenGate() {
+    // When guest taps "OPEN INVITATION", transition into Save-The-Date blooming flower transition
+    setStage("save-the-date");
+  }
+
+  function handleSaveTheDateDone() {
+    // When Save-The-Date blooming flower transition finishes (~4.3s), enter site & enable music
     setStage("site");
     setMusic(true);
   }
@@ -80,8 +76,18 @@ function Invitation() {
           isSite ? "min-h-[100svh]" : "h-[100svh] overflow-hidden touch-none"
         }`}
       >
+        {/* Invitation Gate Card rendered underneath curtain */}
         {stage === "gate" && <InvitationGate onOpen={handleOpenGate} />}
-        {stage === "video" && <VideoIntroPlayer onDone={handleVideoDone} />}
+
+        {/* Curtain-Opening Entrance Overlay (plays automatically on initial page load) */}
+        {stage === "gate" && showCurtain && (
+          <CurtainOpeningAnimation onDone={handleCurtainDone} />
+        )}
+
+        {/* Garden-Gate Save The Date Transition (plays immediately after tapping "OPEN INVITATION") */}
+        {stage === "save-the-date" && (
+          <GardenGateSaveTheDateTransition onDone={handleSaveTheDateDone} />
+        )}
 
         {isSite && (
           <>
