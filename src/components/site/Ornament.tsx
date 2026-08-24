@@ -263,6 +263,139 @@ export function RibbonBowDivider({ className = "h-7 w-48 text-[#4d684f]/70" }: {
   );
 }
 
+/** Expanded Wide Olive-Line Floral Ribbon Opening Divider for RSVP Section:
+ * Prominent Mandap Canopy + Joined Hands & Kalash Emblem + Consistent Olive-Line Sparkle Rays
+ */
+export function RsvpOpeningSceneMotif({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 360 65"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-16 w-full max-w-md text-[#4d684f] ${className}`}
+      aria-hidden="true"
+    >
+      {/* FAR LEFT FLORAL TENDRIL & MINI FLOWER BLOSSOMS (0 - 132) */}
+      <path d="M 6 38 Q 45 38, 132 38" strokeWidth="1.2" />
+      {/* Far Left End Swirl & Leaf Bud */}
+      <path d="M 6 38 C 14 30, 22 32, 18 40 C 14 46, 8 42, 12 38 Z" fill="currentColor" fillOpacity="0.15" strokeWidth="1.1" />
+      {/* Left 5-Petal Mini Flower Blossom #1 at x=35 */}
+      <circle cx="35" cy="38" r="1.5" stroke="#b88636" strokeWidth="1.1" fill="#b88636" fillOpacity="0.3" />
+      <circle cx="35" cy="33" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="35" cy="43" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="30" cy="38" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="40" cy="38" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      {/* Left Olive Leaves */}
+      <path d="M 58 38 C 50 30, 54 26, 62 31 C 68 36, 64 38, 58 38 Z" fill="currentColor" fillOpacity="0.18" />
+      <path d="M 84 38 C 76 30, 80 26, 88 31 C 94 36, 90 38, 84 38 Z" fill="currentColor" fillOpacity="0.18" />
+      {/* Left 5-Petal Mini Flower Blossom #2 at x=108 */}
+      <circle cx="108" cy="38" r="1.5" stroke="#b88636" strokeWidth="1.1" fill="#b88636" fillOpacity="0.3" />
+      <circle cx="108" cy="33" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="108" cy="43" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="103" cy="38" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="113" cy="38" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+
+      {/* FAR RIGHT FLORAL TENDRIL & MINI FLOWER BLOSSOMS (228 - 354) */}
+      <path d="M 228 38 Q 315 38, 354 38" strokeWidth="1.2" />
+      {/* Far Right End Swirl & Leaf Bud */}
+      <path d="M 354 38 C 346 30, 338 32, 342 40 C 346 46, 352 42, 348 38 Z" fill="currentColor" fillOpacity="0.15" strokeWidth="1.1" />
+      {/* Right 5-Petal Mini Flower Blossom #1 at x=325 */}
+      <circle cx="325" cy="38" r="1.5" stroke="#b88636" strokeWidth="1.1" fill="#b88636" fillOpacity="0.3" />
+      <circle cx="325" cy="33" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="325" cy="43" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="320" cy="38" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="330" cy="38" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      {/* Right Olive Leaves */}
+      <path d="M 302 38 C 310 30, 306 26, 298 31 C 292 36, 296 38, 302 38 Z" fill="currentColor" fillOpacity="0.18" />
+      <path d="M 276 38 C 284 30, 280 26, 272 31 C 266 36, 270 38, 276 38 Z" fill="currentColor" fillOpacity="0.18" />
+      {/* Right 5-Petal Mini Flower Blossom #2 at x=252 */}
+      <circle cx="252" cy="38" r="1.5" stroke="#b88636" strokeWidth="1.1" fill="#b88636" fillOpacity="0.3" />
+      <circle cx="252" cy="33" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="252" cy="43" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="247" cy="38" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="257" cy="38" r="2" stroke="currentColor" strokeWidth="0.9" fill="currentColor" fillOpacity="0.15" />
+
+      {/* PROMINENT RECOGNIZABLE WEDDING MANDAP & JOINED HANDS / KALASH CENTERPIECE (135 - 225) */}
+      {/* Mandap Pillars */}
+      <path d="M 148 56 V 38 H 152 V 56" strokeWidth="1.1" fill="#faf6ef" fillOpacity="0.7" />
+      <path d="M 208 56 V 38 H 212 V 56" strokeWidth="1.1" fill="#faf6ef" fillOpacity="0.7" />
+      {/* Mandap Base Platform */}
+      <path d="M 142 56 H 218" strokeWidth="1.3" />
+
+      {/* Royal Mandap Curved Canopy Dome */}
+      <path d="M 146 38 Q 180 18, 214 38" strokeWidth="1.3" fill="#faf6ef" fillOpacity="0.8" />
+      <path d="M 146 38 C 160 44, 200 44, 214 38" strokeWidth="1.1" />
+
+      {/* Hanging Garland Loops under Mandap Dome */}
+      <path d="M 152 40 Q 160 46, 168 40 Q 176 46, 184 40 Q 192 46, 200 40 Q 208 46, 212 40" strokeWidth="1" strokeDasharray="2 1.5" />
+
+      {/* Sacred Kalash / Joined-Hands Vessel at Center of Mandap */}
+      <path d="M 174 56 C 173 50, 172 46, 176 44 H 184 C 188 46, 187 50, 186 56 Z" strokeWidth="1.1" fill="#faf6ef" />
+      <path d="M 174 44 C 176 40, 184 40, 186 44" strokeWidth="1" />
+      <path d="M 180 34 L 176 40 H 184 Z" fill="#b88636" fillOpacity="0.25" stroke="#b88636" strokeWidth="1" />
+
+      {/* Interlocking Rings Emblem over Mandap Dome Peak */}
+      <circle cx="176" cy="18" r="4" stroke="#b88636" strokeWidth="1.2" fill="none" />
+      <circle cx="184" cy="18" r="4" stroke="#b88636" strokeWidth="1.2" fill="none" />
+
+      {/* CONSISTENT OLIVE-LINE FLOATING SPARKS & HEARTS (MATCHING SITE LINEWORK STROKE & WEIGHT) */}
+      {/* Center Floating Heart */}
+      <path d="M 180 7 C 177.5 4, 174 5, 174 8 C 174 10.8, 180 13, 180 13 C 180 13, 186 10.8, 186 8 C 186 5, 182.5 4, 180 7 Z" fill="#b88636" fillOpacity="0.25" stroke="#b88636" strokeWidth="1.1" />
+
+      {/* Consistent Olive-Line Sparkle Cross Rays (Left & Right) */}
+      {/* Left Sparkle Star at x=138, y=14 */}
+      <path d="M 138 9 V 19" stroke="#4d684f" strokeWidth="1.1" />
+      <path d="M 133 14 H 143" stroke="#4d684f" strokeWidth="1.1" />
+      <path d="M 135 11 L 141 17" stroke="#4d684f" strokeWidth="0.9" />
+
+      {/* Right Sparkle Star at x=222, y=14 */}
+      <path d="M 222 9 V 19" stroke="#4d684f" strokeWidth="1.1" />
+      <path d="M 217 14 H 227" stroke="#4d684f" strokeWidth="1.1" />
+      <path d="M 219 11 L 225 17" stroke="#4d684f" strokeWidth="0.9" />
+
+      {/* Additional Subtle Olive Line Rays Top Center */}
+      <path d="M 180 2 V 4" stroke="#b88636" strokeWidth="1.1" />
+      <path d="M 162 10 L 165 12" stroke="#4d684f" strokeWidth="1" />
+      <path d="M 198 10 L 195 12" stroke="#4d684f" strokeWidth="1" />
+    </svg>
+  );
+}
+
+/** Olive-Line Winding Thread Connector between Invitation Card and Journey Illustration:
+ * Continuous dashed path curve connecting card bottom directly to journey illustration top
+ */
+export function JourneyThreadConnector({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 120 100"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-24 w-28 text-[#4d684f] ${className}`}
+      aria-hidden="true"
+    >
+      {/* Continuous Winding Path Thread starting at top (0) and ending at bottom (100) */}
+      <path
+        d="M 60 0 C 60 22, 82 28, 74 48 C 66 68, 46 76, 60 100"
+        stroke="#4d684f"
+        strokeWidth="1.3"
+        strokeDasharray="3.5 2.5"
+      />
+
+      {/* Mini Gold Wax Seal Knot at Center of Thread Curve */}
+      <circle cx="74" cy="48" r="3.5" stroke="#b88636" strokeWidth="1.2" fill="#b88636" fillOpacity="0.3" />
+
+      {/* Tiny Olive Leaf Sprig at Thread Knot */}
+      <path d="M 74 48 Q 83 44, 87 48 Q 81 52, 74 48 Z" fill="#4d684f" fillOpacity="0.35" stroke="#4d684f" strokeWidth="0.9" />
+    </svg>
+  );
+}
+
 export function SectionTitle({
   eyebrow,
   title,

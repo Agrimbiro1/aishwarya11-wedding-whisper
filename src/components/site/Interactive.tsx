@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Check, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { wedding } from "@/data/wedding";
 import { Reveal } from "./Reveal";
-import { useGuestName } from "@/lib/guest";
+import { useGuestName, formatGuestSalutation } from "@/lib/guest";
 import {
   SectionTitle,
   JoinedHandsOrnament,
@@ -15,6 +15,8 @@ import {
   CornerDoveMotif,
   FloatingHeartMotif,
   RibbonBowDivider,
+  RsvpOpeningSceneMotif,
+  JourneyThreadConnector,
 } from "./Ornament";
 
 type Wish = { id: string; name: string; message: string; at: string };
@@ -56,7 +58,10 @@ export function WishingWallSection() {
     if (scrollRef.current) {
       const cards = scrollRef.current.querySelectorAll<HTMLElement>(".wish-card");
       if (cards[idx]) {
-        cards[idx].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+        const card = cards[idx];
+        const container = scrollRef.current;
+        const targetLeft = card.offsetLeft - container.offsetWidth / 2 + card.offsetWidth / 2;
+        container.scrollTo({ left: Math.max(0, targetLeft), behavior: "smooth" });
       }
     }
   }
@@ -410,121 +415,202 @@ export function WishingWallSection() {
 /** 4.8 RSVP */
 export function RsvpSection() {
   const [guestName] = useGuestName();
-  const [attending, setAttending] = useState<"yes" | "no" | null>(null);
-  const [form, setForm] = useState({ name: guestName, contact: "", guests: "0", diet: "", note: "" });
-  const [errors, setErrors] = useState<{ attending?: string; name?: string; contact?: string }>({});
-  const [state, setState] = useState<"idle" | "sending" | "done">("idle");
+  const [isAccepted, setIsAccepted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function set(k: keyof typeof form, v: string) {
-    setForm((f) => ({ ...f, [k]: v }));
-    setErrors((e) => ({ ...e, [k]: "" }));
+  function handleAccept() {
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsAccepted(true);
+    }, 500);
   }
 
-  function submit(e: React.FormEvent) {
-    e.preventDefault();
-    const next: { attending?: string; name?: string; contact?: string } = {};
-    if (!attending) next["attending"] = "Please let us know if you can make it.";
-    if (!form.name.trim()) next["name"] = "Your name is required.";
-    if (!form.contact.trim()) next["contact"] = "A phone or email is required.";
-    setErrors(next);
-    if (Object.keys(next).length) return;
-    setState("sending");
-    setTimeout(() => setState("done"), 800);
+  function handleRevert() {
+    setIsAccepted(false);
   }
-
-  const field = "w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-accent";
 
   return (
-    <section className="paper px-6 py-20">
+    <section className="relative px-6 py-20 overflow-hidden">
+      {/* Background Texture & Scattered Mid-Section Standalone Motifs */}
+      <div className="pointer-events-none absolute top-8 left-6 opacity-30">
+        <LeafSprigMotif className="h-10 w-10 -rotate-45 text-[#4d684f]" />
+      </div>
+      <div className="pointer-events-none absolute bottom-12 right-6 opacity-30">
+        <BirdMotif className="h-8 w-8 rotate-12 text-[#4d684f]" />
+      </div>
+      <div className="pointer-events-none absolute top-14 right-10 opacity-25">
+        <CornerDoveMotif className="h-12 w-12 text-[#4d684f]" />
+      </div>
+      <div className="pointer-events-none absolute bottom-24 left-8 opacity-20">
+        <FloatingHeartMotif className="h-6 w-6 text-[#b88636]" />
+      </div>
+
+      {/* Mid-Section Standalone Motifs for Depth & Consistency */}
+      <div className="pointer-events-none absolute top-1/3 left-8 opacity-25">
+        <BirdMotif className="h-7 w-7 -rotate-12 text-[#4d684f]" />
+      </div>
+      <div className="pointer-events-none absolute top-1/2 right-8 opacity-20">
+        <FloatingHeartMotif className="h-7 w-7 rotate-12 text-[#b88636]" />
+      </div>
+      <div className="pointer-events-none absolute top-28 right-1/4 opacity-20">
+        <LeafSprigMotif className="h-8 w-8 rotate-45 text-[#4d684f]" />
+      </div>
+
+      {/* Confetti Dot Accents */}
+      <div className="pointer-events-none absolute top-1/4 left-1/5 h-1.5 w-1.5 rounded-full bg-[#4d684f]/25" />
+      <div className="pointer-events-none absolute top-1/3 right-1/4 h-1.5 w-1.5 rounded-full bg-[#b88636]/30" />
+      <div className="pointer-events-none absolute bottom-1/3 left-1/3 h-1.5 w-1.5 rounded-full bg-[#4d684f]/25" />
+
+      {/* 1 & 2. Top Header Accent & Expanded Ornamental Divider */}
       <Reveal>
-        <SectionTitle eyebrow={wedding.rsvp.deadlineLabel} title="We Hope You Can Make It" />
+        <SectionTitle
+          eyebrow={wedding.rsvp.deadlineLabel}
+          title="We Hope You Can Make It"
+          customOrnament={<RsvpOpeningSceneMotif className="mx-auto mt-2" />}
+        />
       </Reveal>
 
-      {state === "done" ? (
-        <Reveal>
-          <div className="keepsake-card mx-auto mt-8 max-w-sm p-8 text-center">
-            <Check className="mx-auto h-8 w-8 text-primary" />
-            <h3 className="mt-3 font-display text-2xl text-foreground">Thank you, {form.name.split(" ")[0]}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              {attending === "yes"
-                ? "Your RSVP is in — we can't wait to celebrate with you."
-                : "We'll miss you, but thank you for letting us know."}
-            </p>
-            <button
-              onClick={() => setState("idle")}
-              className="mt-5 text-xs uppercase tracking-[0.18em] text-accent underline underline-offset-4"
-            >
-              Edit response
-            </button>
-          </div>
-        </Reveal>
-      ) : (
-        <Reveal delay={100}>
-          <form onSubmit={submit} className="keepsake-card mx-auto mt-8 max-w-sm space-y-4 p-5">
-            <div className="grid grid-cols-2 gap-2">
-              {(["yes", "no"] as const).map((v) => (
+      {/* Main Invitation Card Container — Elevated Double-Line Gold Border */}
+      <Reveal delay={100}>
+        <div className="relative mx-auto mt-8 max-w-sm rounded-2xl border-2 border-[#b88636]/60 bg-[#fcfaf5] p-1 shadow-lg backdrop-blur-sm">
+          {/* Inner Frame */}
+          <div className="relative rounded-xl border border-[#b88636]/40 bg-[#faf6ef]/90 p-7 text-center overflow-hidden">
+            {/* Unified Continuous Background Watermark Scene */}
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-2 opacity-15 mix-blend-multiply">
+              <img
+                src="/assets/udaipur_rsvp_journey.svg"
+                alt=""
+                className="h-full w-full object-contain"
+                aria-hidden="true"
+              />
+            </div>
+
+            {/* Ornate Gold Corner Flourishes */}
+            <svg className="pointer-events-none absolute top-1.5 left-1.5 h-6 w-6 text-[#b88636]/80" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <path d="M 3 14 V 5 C 3 3.895 3.895 3 5 3 H 14" />
+              <path d="M 7 10 V 7 H 10" />
+              <circle cx="5" cy="5" r="1.2" fill="currentColor" fillOpacity="0.5" />
+              <path d="M 12 3 C 8 3 3 8 3 12" strokeDasharray="1.5 1.5" />
+            </svg>
+            <svg className="pointer-events-none absolute top-1.5 right-1.5 h-6 w-6 text-[#b88636]/80" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <path d="M 29 14 V 5 C 29 3.895 28.105 3 27 3 H 18" />
+              <path d="M 25 10 V 7 H 22" />
+              <circle cx="27" cy="5" r="1.2" fill="currentColor" fillOpacity="0.5" />
+              <path d="M 20 3 C 24 3 29 8 29 12" strokeDasharray="1.5 1.5" />
+            </svg>
+            <svg className="pointer-events-none absolute bottom-1.5 left-1.5 h-6 w-6 text-[#b88636]/80" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <path d="M 3 18 V 27 C 3 28.105 3.895 29 5 29 H 14" />
+              <path d="M 7 22 V 25 H 10" />
+              <circle cx="5" cy="27" r="1.2" fill="currentColor" fillOpacity="0.5" />
+              <path d="M 12 29 C 8 29 3 24 3 20" strokeDasharray="1.5 1.5" />
+            </svg>
+            <svg className="pointer-events-none absolute bottom-1.5 right-1.5 h-6 w-6 text-[#b88636]/80" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <path d="M 29 18 V 27 C 29 28.105 28.105 29 27 29 H 18" />
+              <path d="M 25 22 V 25 H 22" />
+              <circle cx="27" cy="27" r="1.2" fill="currentColor" fillOpacity="0.5" />
+              <path d="M 20 29 C 24 29 29 24 29 20" strokeDasharray="1.5 1.5" />
+            </svg>
+
+          {isAccepted ? (
+            /* Personalised Thank You State */
+            <div className="relative z-10 space-y-4 py-2">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-[#b88636]/40 bg-[#b88636]/10 text-[#b88636]">
+                <WaxSealStampIcon className="h-7 w-7" />
+              </div>
+
+              <div className="space-y-1">
+                <p className="text-[0.62rem] font-medium uppercase tracking-[0.26em] text-[#b88636]">RSVP Confirmed</p>
+                <h3 className="font-display text-2xl font-medium text-foreground">
+                  Thank you, {guestName}!
+                </h3>
+              </div>
+
+              <p className="font-serif italic text-sm leading-relaxed text-[#3d543e]">
+                "Your presence is our greatest gift. We cannot wait to celebrate with you in Udaipur!"
+              </p>
+
+              {/* 5. Revert Option with Gentle Flower/Envelope Icon */}
+              <div className="pt-3 border-t border-[#b88636]/20">
                 <button
-                  key={v}
-                  type="button"
-                  onClick={() => {
-                    setAttending(v);
-                    setErrors((e) => ({ ...e, attending: "" }));
-                  }}
-                  className={`rounded-lg border px-3 py-3 text-xs uppercase tracking-[0.16em] transition-colors ${
-                    attending === v ? "border-accent bg-secondary text-foreground" : "border-input text-muted-foreground"
-                  }`}
+                  onClick={handleRevert}
+                  className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.2em] text-[#4d684f] transition-all hover:text-[#b88636] hover:underline underline-offset-4"
                 >
-                  {v === "yes" ? "Joyfully accepts" : "Regretfully declines"}
+                  <HeartFlowerIcon className="h-3.5 w-3.5 text-[#4d684f]" />
+                  <span>Revert RSVP</span>
                 </button>
-              ))}
+              </div>
             </div>
-            {errors["attending"] && <p className="text-xs text-destructive">{errors["attending"]}</p>}
+          ) : (
+            /* Original State with Joyfully Accept Button */
+            <div className="relative z-10 space-y-5 py-2">
+              {/* BUG FIX Verification: Clean Salutation Format */}
+              <div className="space-y-1.5">
+                <p className="text-[0.62rem] font-medium uppercase tracking-[0.28em] text-[#4d684f]">
+                  Personal Invitation
+                </p>
+                <p className="font-display text-xl font-medium text-foreground">
+                  <strong className="font-semibold text-[#4d684f]">{formatGuestSalutation(guestName)}</strong>,
+                </p>
+                <p className="font-serif italic text-xs leading-relaxed text-muted-foreground">
+                  Your presence is warmly requested at {wedding.couple.partnerA} & {wedding.couple.partnerB}'s wedding.
+                </p>
+              </div>
 
-            <div>
-              <input value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Full name" className={field} />
-              {errors["name"] && <p className="mt-1 text-xs text-destructive">{errors["name"]}</p>}
+              {/* 4. Joyfully Accept Button & Refined Single-Line Olive Ink Accents */}
+              <div className="flex items-center justify-center gap-2 pt-2">
+                {/* Left Leaf Sprig */}
+                <svg className="h-4 w-5 text-[#4d684f]/70" viewBox="0 0 24 16" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true">
+                  <path d="M 22 8 Q 12 8, 2 8" />
+                  <path d="M 14 8 C 10 5, 8 4, 10 2 C 12 5, 15 7, 14 8 Z" fill="currentColor" fillOpacity="0.25" />
+                  <path d="M 8 8 C 4 11, 2 12, 4 14 C 6 11, 9 9, 8 8 Z" fill="currentColor" fillOpacity="0.25" />
+                </svg>
+
+                <button
+                  onClick={handleAccept}
+                  disabled={isSubmitting}
+                  className="flex items-center gap-2 rounded-full bg-[#4d684f] px-7 py-3 text-xs font-medium uppercase tracking-[0.22em] text-white shadow-md transition-all hover:bg-[#3d543e] active:scale-95 disabled:opacity-70"
+                >
+                  {isSubmitting ? (
+                    <Loader2 className="h-4 w-4 animate-spin text-white" />
+                  ) : (
+                    <span>Joyfully Accept</span>
+                  )}
+                </button>
+
+                {/* Right Leaf Sprig */}
+                <svg className="h-4 w-5 text-[#4d684f]/70" viewBox="0 0 24 16" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true">
+                  <path d="M 2 8 Q 12 8, 22 8" />
+                  <path d="M 10 8 C 14 5, 16 4, 14 2 C 12 5, 9 7, 10 8 Z" fill="currentColor" fillOpacity="0.25" />
+                  <path d="M 16 8 C 20 11, 22 12, 20 14 C 18 11, 15 9, 16 8 Z" fill="currentColor" fillOpacity="0.25" />
+                </svg>
+              </div>
             </div>
-            <div>
-              <input value={form.contact} onChange={(e) => set("contact", e.target.value)} placeholder="Phone or email" className={field} />
-              {errors["contact"] && <p className="mt-1 text-xs text-destructive">{errors["contact"]}</p>}
-            </div>
+          )}
+          </div>
+        </div>
+      </Reveal>
 
-            {attending === "yes" && (
-              <>
-                {wedding.rsvp.allowPlusOnes && (
-                  <label className="block text-xs text-muted-foreground">
-                    Guests joining you
-                    <select value={form.guests} onChange={(e) => set("guests", e.target.value)} className={`${field} mt-1`}>
-                      {["0", "1", "2", "3"].map((n) => (
-                        <option key={n} value={n}>
-                          {n}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                )}
-                <input value={form.diet} onChange={(e) => set("diet", e.target.value)} placeholder="Dietary requirements (optional)" className={field} />
-              </>
-            )}
+      {/* Visual Color-Thread Continuity Connector ("Invitation -> Your Journey to Us") */}
+      <Reveal delay={150}>
+        <div className="flex justify-center -mt-6 -mb-6 relative z-20 pointer-events-none">
+          <JourneyThreadConnector />
+        </div>
+      </Reveal>
 
-            <textarea
-              value={form.note}
-              onChange={(e) => set("note", e.target.value)}
-              rows={2}
-              placeholder="A note for the couple (optional)"
-              className={`${field} resize-none`}
-            />
-
-            <button
-              disabled={state === "sending"}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-xs uppercase tracking-[0.2em] text-primary-foreground disabled:opacity-70"
-            >
-              {state === "sending" && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              Send RSVP
-            </button>
-          </form>
-        </Reveal>
-      )}
+      {/* Standalone Detailed "Journey to Udaipur Wedding" Vector Illustration Asset (Directly on Page Background, NO Box/Card) */}
+      <Reveal delay={200}>
+        <div className="mx-auto mt-2 max-w-sm text-center">
+          <img
+            src="/assets/udaipur_rsvp_journey.svg"
+            alt="Journey to Udaipur Wedding"
+            className="mx-auto h-auto w-full max-w-[300px] pointer-events-none select-none"
+          />
+          <p className="mt-3 font-serif italic text-xs text-[#4d684f]">
+            "A celebratory journey through Udaipur to Aanya & Rahul's wedding mandap."
+          </p>
+        </div>
+      </Reveal>
     </section>
   );
 }

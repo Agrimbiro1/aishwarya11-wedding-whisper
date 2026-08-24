@@ -7,7 +7,7 @@ const GUEST_STORAGE_KEY = "wedding_whisper_guest_name";
  * Priority:
  * 1. URL Query Parameter (`?guest=...` or `?name=...`)
  * 2. LocalStorage saved guest name
- * 3. Default fallback ("Dearest Guest")
+ * 3. Default fallback ("Honored Guest")
  */
 export function getGuestName(): string {
   if (typeof window !== "undefined") {
@@ -28,7 +28,22 @@ export function getGuestName(): string {
       // Fallback if localStorage or URL fails
     }
   }
-  return "Dearest Guest";
+  return "Honored Guest";
+}
+
+/**
+ * Formats guest name for warm salutations (e.g. "Dearest Priya" or "Dearest Guest").
+ * Prevents repetitive prefixes like "Dearest Dearest Guest".
+ */
+export function formatGuestSalutation(name: string): string {
+  const trimmed = name.trim();
+  if (!trimmed || trimmed === "Honored Guest" || trimmed === "Guest") {
+    return "Dearest Guest";
+  }
+  if (trimmed.toLowerCase().startsWith("dearest")) {
+    return trimmed;
+  }
+  return `Dearest ${trimmed}`;
 }
 
 /**
