@@ -689,8 +689,73 @@
   .animate-burst-tr,
   .animate-burst-bl,
   .animate-burst-br,
-  .animate-burst-up {
+  .animate-burst-up,
+  .animate-pin-card-drop,
+  .animate-pin-tap,
+  .animate-olive-ripple {
     animation: none !important;
   }
 }
+
+/* Custom Pinning Animation for Wishing Wall Cards */
+@keyframes pinCardDrop {
+  0% {
+    transform: translateY(-28px) scale(0.92);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(4px) scale(1.03);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-2px) scale(0.99);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pinTapFlash {
+  0% {
+    transform: scale(2.2) translateY(-14px);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.4) translateY(2px);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.9) translateY(-1px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes oliveRippleFlash {
+  0% {
+    box-shadow: 0 0 0 0 rgba(77, 104, 79, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(77, 104, 79, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(77, 104, 79, 0);
+  }
+}
+
+.animate-pin-card-drop {
+  animation: pinCardDrop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-pin-tap {
+  animation: pinTapFlash 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+}
+
+.animate-olive-ripple {
+  animation: oliveRippleFlash 0.9s ease-out 0.3s forwards;
+}
+
 
