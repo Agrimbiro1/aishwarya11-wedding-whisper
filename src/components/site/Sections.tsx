@@ -727,31 +727,114 @@ export function FamilySection() {
   );
 }
 
+/** Delicate miniature olive-line closing flourish motif for site end */
+function FinalClosingFlourish({ className = "mx-auto mt-4 text-[#4d684f]" }: { className?: string }) {
+  return (
+    <div className={`flex items-center justify-center gap-2 opacity-70 ${className}`}>
+      <span className="h-[1px] w-6 bg-gradient-to-r from-transparent to-[#4d684f]/40" />
+      <svg
+        viewBox="0 0 40 16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="w-7 h-3 text-[#4d684f]"
+        aria-hidden="true"
+      >
+        <path d="M4 8 C 12 2, 16 14, 20 8 C 24 2, 28 14, 36 8" />
+        <circle cx="20" cy="8" r="1.5" fill="currentColor" fillOpacity="0.4" />
+        <path d="M12 5 Q 14 2 16 5" />
+        <path d="M24 11 Q 26 14 28 11" />
+      </svg>
+      <span className="h-[1px] w-6 bg-gradient-to-l from-transparent to-[#4d684f]/40" />
+    </div>
+  );
+}
+
 /** 4.11 Thank You */
 export function ThankYouSection() {
   const names = useMemo(
     () => `${wedding.couple.partnerA} & ${wedding.couple.partnerB}`,
     [],
   );
+
+  // Highlight key emotional words ("story" & "love") with calligraphic script accent (matching Family Section & Our Story)
+  const renderFormattedClosingNote = (noteText: string) => {
+    const wordsToHighlight = ["story", "love"];
+    const regex = new RegExp(`\\b(${wordsToHighlight.join("|")})\\b`, "gi");
+    const noteParts = noteText.split(regex);
+
+    return noteParts.map((part, index) => {
+      if (wordsToHighlight.includes(part.toLowerCase())) {
+        return (
+          <span key={index} className="font-script text-xl text-primary font-normal mx-0.5 inline-block">
+            {part}
+          </span>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
+
   return (
-    <section className="paper px-6 py-24 text-center">
+    <section className="relative paper px-6 pt-12 pb-24 text-center overflow-hidden">
+      {/* Watercolor Sunset/Dusk Illustration at the TOP with 360-Degree Vignette Mask & Corner Botanical Accents */}
       <Reveal>
-        <p className="text-[0.66rem] uppercase tracking-[0.32em] text-accent/90 font-medium">
+        <div className="relative w-full max-w-md mx-auto h-52 sm:h-60 mb-2 px-4">
+          {/* Subtle Outer Background Botanical Corner Accents for Continuity */}
+          <BotanicalSprigLeft className="absolute -top-3 -left-1 w-10 h-10 text-primary/30 z-20 pointer-events-none transform -rotate-12" />
+          <BotanicalSprigRight className="absolute -top-3 -right-1 w-10 h-10 text-primary/30 z-20 pointer-events-none transform rotate-12" />
+          <BotanicalSprigLeft className="absolute -bottom-2 -left-1 w-9 h-9 text-primary/25 z-20 pointer-events-none transform rotate-180" />
+          <BotanicalSprigRight className="absolute -bottom-2 -right-1 w-9 h-9 text-primary/25 z-20 pointer-events-none transform rotate-180 scale-x-[-1]" />
+
+          {/* Soft Top Feathering Scrim Layer */}
+          <div className="absolute -top-4 left-0 right-0 h-16 z-10 bg-gradient-to-b from-background via-background/85 to-transparent pointer-events-none" />
+
+          <div
+            className="relative w-full h-full overflow-hidden"
+            style={{
+              maskImage: "radial-gradient(ellipse 80% 68% at 50% 50%, black 20%, transparent 90%)",
+              WebkitMaskImage: "radial-gradient(ellipse 80% 68% at 50% 50%, black 20%, transparent 90%)",
+            }}
+          >
+            <img
+              src="/assets/udaipur_farewell_watercolor.png"
+              alt="Udaipur lake palace sunset watercolor farewell scene"
+              className="w-full h-full object-cover object-center scale-105"
+              loading="lazy"
+            />
+            {/* Multi-tier 360-Degree Gradient Overlays for 100% Seamless Paper Melt */}
+            <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-95 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background opacity-90 pointer-events-none" />
+          </div>
+
+          {/* Soft Bottom Feathering Scrim Layer */}
+          <div className="absolute -bottom-3 left-0 right-0 h-16 z-10 bg-gradient-to-t from-background via-background/85 to-transparent pointer-events-none" />
+        </div>
+      </Reveal>
+
+      <Reveal delay={60}>
+        <p className="text-[0.66rem] uppercase tracking-[0.34em] text-[#b88636] font-medium">
           WITH ALL OUR LOVE
         </p>
         <h2 className="mt-1 font-script text-5xl md:text-6xl text-primary font-normal leading-tight tracking-wide">
           {names}
         </h2>
-        <Ornament className="mx-auto mt-2" />
-        <p className="mt-4 text-xs uppercase tracking-[0.28em] text-accent font-medium">{wedding.dateLabel}</p>
-        <p className="mx-auto mt-6 max-w-xs text-sm leading-relaxed text-muted-foreground">
-          {wedding.thankYou.message}
+        <Ornament className="mx-auto mt-2 text-[#b88636]/85" />
+        <p className="mt-4 text-xs uppercase tracking-[0.30em] text-[#b88636] font-medium">{wedding.dateLabel}</p>
+        <p className="mx-auto mt-6 max-w-xs text-sm leading-relaxed text-muted-foreground font-sans">
+          {renderFormattedClosingNote(wedding.thankYou.message)}
         </p>
         {wedding.thankYou.attribution && (
-          <div className="mt-12 flex items-center justify-center gap-1.5 font-sans text-[0.66rem] uppercase tracking-[0.26em] text-muted-foreground/75 font-medium">
-            <span>Made with</span>
-            <Heart className="h-3 w-3 stroke-[1.8] text-[#c45b5b] fill-[#c45b5b]/30 inline-block animate-pulse" />
-            <span>for {names}</span>
+          <div className="mt-12 flex flex-col items-center">
+            <div className="flex items-center justify-center gap-1.5 font-sans text-[0.66rem] uppercase tracking-[0.26em] text-muted-foreground/75 font-medium">
+              <span>Made with</span>
+              <Heart className="h-3 w-3 stroke-[1.8] text-[#c45b5b] fill-[#c45b5b]/30 inline-block animate-pulse" />
+              <span>for {names}</span>
+            </div>
+            {/* Miniature Olive-Line Final Closing Flourish */}
+            <FinalClosingFlourish className="mt-4" />
           </div>
         )}
       </Reveal>
