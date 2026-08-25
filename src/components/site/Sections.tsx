@@ -249,11 +249,16 @@ export function EventSection() {
 
   return (
     <section className="relative event-bg-pattern px-6 py-20 text-center overflow-hidden">
-      {/* Background Decorative Line-Art Ornaments (Non-interactive, Aria-hidden, Low Opacity, 100% Transparent) */}
+      {/* Background Decorative Standalone Line-Art Motifs (Diya, Lotus, Stars & Floating Petals) */}
       <BotanicalSprigLeft className="absolute top-20 -left-2 rotate-[-12deg] opacity-20" />
-      <BotanicalSprigRight className="absolute top-[34%] -right-2 rotate-[15deg] opacity-20" />
+      <DiyaMotif className="absolute top-[14%] right-4 w-6 h-5 opacity-25 rotate-6 text-[#c87d55]" />
+      <BotanicalSprigRight className="absolute top-[32%] -right-2 rotate-[15deg] opacity-20" />
+      <FloatingPetalsSketch className="absolute top-[28%] left-3 opacity-25 text-primary" />
+      <LotusMotif className="absolute top-[48%] right-3 w-6 h-5 opacity-25 -rotate-12 text-[#c28e38]" />
       <PalmLeafAccent className="absolute top-[58%] -left-3 opacity-25" />
-      <EveningStarAccent className="absolute top-[78%] right-2 opacity-25" />
+      <EveningStarAccent className="absolute top-[68%] left-4 w-8 h-8 opacity-25 text-accent" />
+      <DiyaMotif className="absolute top-[84%] right-4 w-6 h-5 opacity-25 rotate-12 text-[#c87d55]" />
+      <EveningStarAccent className="absolute top-[90%] left-3 opacity-20" />
 
       {/* Header Section */}
       <Reveal>
@@ -284,28 +289,88 @@ export function EventSection() {
 
       {/* Sequential Event Flow */}
       <div className="mx-auto mt-14 max-w-sm">
-        {wedding.days.map((d) => (
-          <div key={d.label} className="w-full">
-            {/* Inline Day Heading Break */}
-            <Reveal>
-              <div className="my-8 flex flex-col items-center text-center">
-                <DayHeadingFlourish className="mb-2" />
-                <h3 className="font-display text-2xl md:text-3xl text-foreground font-normal tracking-wide">
-                  {d.label}
-                </h3>
-                {d.dateLabel && (
-                  <p className="mt-1 text-[0.68rem] uppercase tracking-[0.24em] text-accent font-medium">
-                    {d.dateLabel}
-                  </p>
-                )}
-                <DayHeadingFlourish className="mt-2 rotate-180" />
-              </div>
-            </Reveal>
+        {wedding.days.map((d, dayIdx) => {
+          const isDayOne = dayIdx === 0;
+          const dayNumber = isDayOne ? "DAY I" : "DAY II";
+          const daySubtitle = isDayOne ? "CELEBRATION" : "THE NUPTIALS";
+
+          return (
+            <div key={d.label} className="w-full">
+              {/* Standalone Gallery-Style Chapter Illustrated Moment for Each Day */}
+              <Reveal>
+                <div className="relative my-10 flex flex-col items-center text-center">
+                  {/* Top Flourish & Day Number Badge */}
+                  <div className="flex items-center justify-center gap-2.5">
+                    <span className="h-[1px] w-10 bg-gradient-to-r from-transparent to-[#b88636]/60" />
+                    {isDayOne ? (
+                      <LotusMotif className="w-5 h-4 text-[#b88636]" />
+                    ) : (
+                      <DiyaMotif className="w-5 h-4 text-[#c87d55]" />
+                    )}
+                    <p
+                      className={`text-[0.64rem] uppercase tracking-[0.32em] font-medium ${
+                        isDayOne ? "text-[#b88636]" : "text-[#c87d55]"
+                      }`}
+                    >
+                      {dayNumber} &bull; {daySubtitle}
+                    </p>
+                    {isDayOne ? (
+                      <LotusMotif className="w-5 h-4 text-[#b88636] scale-x-[-1]" />
+                    ) : (
+                      <DiyaMotif className="w-5 h-4 text-[#c87d55] scale-x-[-1]" />
+                    )}
+                    <span className="h-[1px] w-10 bg-gradient-to-l from-transparent to-[#b88636]/60" />
+                  </div>
+
+                  {/* Prominent Serif + Script Day Name */}
+                  <h3 className="mt-2.5 font-display text-3xl md:text-4xl text-foreground font-normal tracking-wide">
+                    {isDayOne ? (
+                      <>
+                        Mehndi{" "}
+                        <span className="font-script text-3xl md:text-4xl text-primary mx-1 font-normal">
+                          &
+                        </span>{" "}
+                        Sangeet
+                      </>
+                    ) : (
+                      <>
+                        The{" "}
+                        <span className="font-script text-3xl md:text-4xl text-primary mx-1 font-normal">
+                          Wedding
+                        </span>{" "}
+                        Day
+                      </>
+                    )}
+                  </h3>
+
+                  {/* Date Badge Pill */}
+                  {d.dateLabel && (
+                    <div
+                      className={`mt-2.5 inline-flex items-center gap-2 rounded-full border bg-[#fdfaf3] px-3.5 py-1 text-[0.68rem] uppercase tracking-[0.26em] font-medium shadow-2xs ${
+                        isDayOne
+                          ? "border-[#b88636]/40 text-[#b88636]"
+                          : "border-[#c87d55]/40 text-[#c87d55]"
+                      }`}
+                    >
+                      <CalendarPlus className="h-3 w-3" />
+                      <span>{d.dateLabel}</span>
+                    </div>
+                  )}
+
+                  {/* Bottom Flourish Integration */}
+                  {isDayOne ? (
+                    <DayHeadingFlourish className="mt-3 text-[#b88636]/75" />
+                  ) : (
+                    <MandalaPaisleyDivider className="my-4 text-[#b88636]" />
+                  )}
+                </div>
+              </Reveal>
 
             {/* Day Events */}
             {d.events.map((e, i) => {
               globalEventCounter++;
               const isLastEventInSchedule = globalEventCounter === totalEvents;
+              const IconComponent = "icon" in e && typeof e.icon === "string" && ICONS[e.icon] ? ICONS[e.icon] : null;
 
               return (
                 <Reveal key={`${d.label}-${e.title}`} delay={i * 80}>
@@ -313,16 +378,37 @@ export function EventSection() {
                     <p className="text-[0.7rem] font-medium uppercase tracking-[0.26em] text-accent/90">
                       {e.time}
                     </p>
-                    <h4 className="mt-1 font-display text-2xl md:text-3xl text-foreground font-normal leading-snug">
-                      {e.title}
+                    <h4 className="mt-1 flex items-center justify-center gap-2.5 font-display text-2xl md:text-3xl text-foreground font-normal leading-snug">
+                      {IconComponent && (
+                        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#4d684f]/35 bg-[#fdfaf3] text-primary shadow-2xs">
+                          <IconComponent className="h-3.5 w-3.5 stroke-[1.8]" />
+                        </span>
+                      )}
+                      <span>{e.title}</span>
                     </h4>
                     <p className="mt-1 max-w-xs text-sm leading-relaxed text-muted-foreground/90 font-sans">
                       {e.desc}
                     </p>
-                    {"location" in e && e.location && (
-                      <p className="mt-1.5 flex items-center justify-center gap-1 text-xs text-muted-foreground">
-                        <MapPin className="h-3 w-3 text-accent" /> {e.location}
-                      </p>
+                    {("venue" in e || "location" in e) && (
+                      <a
+                        href={
+                          "mapUrl" in e && typeof e.mapUrl === "string"
+                            ? e.mapUrl
+                            : `https://maps.google.com/?q=${encodeURIComponent(
+                                (("venue" in e && e.venue)
+                                  ? e.venue
+                                  : ("location" in e && e.location ? e.location : "")) + " Udaipur"
+                              )}`
+                        }
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`View ${"venue" in e && e.venue ? e.venue : "location" in e ? e.location : "venue"} location on Google Maps`}
+                        className="mt-2.5 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/8 px-3 py-1 text-[0.72rem] font-medium text-accent hover:bg-accent/18 hover:border-accent/65 shadow-2xs transition-all active:scale-95 group"
+                      >
+                        <MapPin className="h-3 w-3 stroke-[1.8] text-accent transition-transform group-hover:scale-110" />
+                        <span>{"venue" in e && e.venue ? e.venue : "location" in e ? e.location : ""}</span>
+                        <Navigation className="h-2.5 w-2.5 opacity-60 ml-0.5 group-hover:opacity-100" />
+                      </a>
                     )}
 
                     {!isLastEventInSchedule && (
@@ -333,8 +419,9 @@ export function EventSection() {
               );
             })}
           </div>
-        ))}
-      </div>
+        );
+      })}
+    </div>
 
       {/* Closing Flourish Illustration — Option C Approved Line Art */}
       <Reveal delay={200}>
