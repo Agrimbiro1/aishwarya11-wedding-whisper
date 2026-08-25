@@ -62,7 +62,7 @@ function Invitation() {
   }
 
   function handleSaveTheDateDone() {
-    // When Save-The-Date blooming flower transition finishes (~4.3s), enter site & enable music
+    // When Save-The-Date blooming flower transition finishes (~5.8s), enter site & enable music
     setStage("site");
     setMusic(true);
   }

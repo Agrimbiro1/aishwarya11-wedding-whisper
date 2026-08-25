@@ -364,34 +364,105 @@ export function RsvpOpeningSceneMotif({ className = "" }: { className?: string }
   );
 }
 
-/** Olive-Line Winding Thread Connector between Invitation Card and Journey Illustration:
- * Continuous dashed path curve connecting card bottom directly to journey illustration top
+/** Vertical Organic Connective Olive Branch between Invitation Card & Journey Illustration:
+ * Graceful vertical olive stem with leaves and gold olives, replacing the dashed thread
  */
-export function JourneyThreadConnector({ className = "" }: { className?: string }) {
+export function ConnectiveOliveBranch({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 120 100"
+      viewBox="0 0 50 100"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.3"
+      strokeWidth="1.2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={`h-24 w-28 text-[#4d684f] ${className}`}
+      className={`h-24 w-12 text-[#4d684f] ${className}`}
       aria-hidden="true"
     >
-      {/* Continuous Winding Path Thread starting at top (0) and ending at bottom (100) */}
+      {/* Main Organic Vertical Stem */}
       <path
-        d="M 60 0 C 60 22, 82 28, 74 48 C 66 68, 46 76, 60 100"
+        d="M 25 0 Q 18 25, 26 50 T 25 100"
         stroke="#4d684f"
         strokeWidth="1.3"
-        strokeDasharray="3.5 2.5"
       />
 
-      {/* Mini Gold Wax Seal Knot at Center of Thread Curve */}
-      <circle cx="74" cy="48" r="3.5" stroke="#b88636" strokeWidth="1.2" fill="#b88636" fillOpacity="0.3" />
+      {/* Top Left Leaf */}
+      <path d="M 23 18 C 14 14, 8 16, 10 22 C 14 24, 20 22, 23 18 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
+      {/* Top Right Leaf */}
+      <path d="M 24 28 C 33 24, 39 26, 37 32 C 33 34, 27 32, 24 28 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
 
-      {/* Tiny Olive Leaf Sprig at Thread Knot */}
-      <path d="M 74 48 Q 83 44, 87 48 Q 81 52, 74 48 Z" fill="#4d684f" fillOpacity="0.35" stroke="#4d684f" strokeWidth="0.9" />
+      {/* Upper Left Gold Accent Olive Fruit */}
+      <circle cx="16" cy="38" r="2.5" stroke="#b88636" strokeWidth="1.1" fill="#b88636" fillOpacity="0.35" />
+
+      {/* Middle Left Leaf */}
+      <path d="M 23 48 C 13 44, 7 48, 10 54 C 15 56, 20 52, 23 48 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
+      {/* Middle Right Leaf */}
+      <path d="M 26 58 C 36 54, 42 58, 39 64 C 34 66, 28 62, 26 58 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
+
+      {/* Lower Right Gold Accent Olive Fruit */}
+      <circle cx="33" cy="68" r="2.5" stroke="#b88636" strokeWidth="1.1" fill="#b88636" fillOpacity="0.35" />
+
+      {/* Lower Left Leaf */}
+      <path d="M 25 78 C 15 74, 9 78, 12 84 C 17 86, 22 82, 25 78 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
+      {/* Lower Right Leaf */}
+      <path d="M 25 88 C 34 84, 40 88, 37 94 C 32 96, 27 92, 25 88 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
+    </svg>
+  );
+}
+
+/** Backward compatibility alias for ConnectiveOliveBranch */
+export function JourneyThreadConnector({ className = "" }: { className?: string }) {
+  return <ConnectiveOliveBranch className={className} />;
+}
+
+/** Vertical Organic Olive Palm Branch Connector between Travel Cards:
+ * Continuous olive stem with delicate palm leaves and gold accent buds connecting travel cards
+ */
+export function TravelJourneyConnector({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 50 140"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-36 w-14 text-[#4d684f] ${className}`}
+      aria-hidden="true"
+    >
+      {/* Main Organic Vertical Curved Stem */}
+      <path
+        d="M 25 0 Q 34 35, 23 70 T 25 140"
+        stroke="#4d684f"
+        strokeWidth="1.3"
+      />
+
+      {/* Palm Leaf 1 (Top Left) */}
+      <path d="M 24 16 C 14 11, 8 13, 10 19 C 14 21, 20 19, 24 16 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
+      {/* Palm Leaf 2 (Top Right) */}
+      <path d="M 26 26 C 36 21, 42 23, 40 29 C 35 31, 29 29, 26 26 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
+
+      {/* Gold Accent Bud 1 (Mid-Upper Left) */}
+      <circle cx="15" cy="38" r="2.5" stroke="#b88636" strokeWidth="1.1" fill="#b88636" fillOpacity="0.35" />
+
+      {/* Palm Leaf 3 (Mid-Upper Left) */}
+      <path d="M 23 48 C 13 43, 7 47, 10 53 C 15 55, 20 51, 23 48 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
+      {/* Palm Leaf 4 (Center Right) */}
+      <path d="M 24 62 C 34 57, 41 61, 38 67 C 33 69, 27 65, 24 62 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
+
+      {/* Gold Accent Bud 2 (Center Right) */}
+      <circle cx="35" cy="74" r="2.5" stroke="#b88636" strokeWidth="1.1" fill="#b88636" fillOpacity="0.35" />
+
+      {/* Palm Leaf 5 (Mid-Lower Left) */}
+      <path d="M 24 86 C 14 81, 8 85, 11 91 C 16 93, 21 89, 24 86 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
+      {/* Palm Leaf 6 (Lower Right) */}
+      <path d="M 25 102 C 35 97, 41 101, 38 107 C 33 109, 27 105, 25 102 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
+
+      {/* Gold Accent Bud 3 (Lower Left) */}
+      <circle cx="15" cy="116" r="2.5" stroke="#b88636" strokeWidth="1.1" fill="#b88636" fillOpacity="0.35" />
+
+      {/* Palm Leaf 7 (Bottom Left) */}
+      <path d="M 25 124 C 15 119, 9 123, 12 129 C 17 131, 22 127, 25 124 Z" fill="#4d684f" fillOpacity="0.25" stroke="#4d684f" strokeWidth="1" />
     </svg>
   );
 }

@@ -16,7 +16,7 @@ import {
   FloatingHeartMotif,
   RibbonBowDivider,
   RsvpOpeningSceneMotif,
-  JourneyThreadConnector,
+  ConnectiveOliveBranch,
 } from "./Ornament";
 
 type Wish = { id: string; name: string; message: string; at: string };
@@ -417,13 +417,37 @@ export function RsvpSection() {
   const [guestName] = useGuestName();
   const [isAccepted, setIsAccepted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCelebrating, setIsCelebrating] = useState(false);
+  const [confettiParticles, setConfettiParticles] = useState<Array<{ id: number; tx: number; ty: number; tr: number; size: number; color: string; isHeart?: boolean }>>([]);
 
   function handleAccept() {
     setIsSubmitting(true);
+    setIsCelebrating(true);
+
+    // Generate 16 celebratory confetti particles radiating in olive & gold palette
+    const colors = ["#4d684f", "#b88636", "#d4af37", "#6b8e6e", "#e2c58a"];
+    const particles = Array.from({ length: 16 }, (_, i) => {
+      const angle = (i / 16) * 360 + (Math.random() * 20 - 10);
+      const distance = 45 + Math.random() * 65;
+      const tx = Math.cos((angle * Math.PI) / 180) * distance;
+      const ty = -25 + Math.sin((angle * Math.PI) / 180) * distance - Math.random() * 35;
+      const tr = Math.random() * 360 - 180;
+      const size = 5 + Math.random() * 5;
+      const color = colors[i % colors.length];
+      const isHeart = i % 4 === 0;
+      return { id: i, tx, ty, tr, size, color, isHeart };
+    });
+    setConfettiParticles(particles);
+
     setTimeout(() => {
       setIsSubmitting(false);
       setIsAccepted(true);
-    }, 500);
+    }, 550);
+
+    setTimeout(() => {
+      setIsCelebrating(false);
+      setConfettiParticles([]);
+    }, 1800);
   }
 
   function handleRevert() {
@@ -432,35 +456,39 @@ export function RsvpSection() {
 
   return (
     <section className="relative px-6 py-20 overflow-hidden">
-      {/* Background Texture & Scattered Mid-Section Standalone Motifs */}
-      <div className="pointer-events-none absolute top-8 left-6 opacity-30">
+      {/* Background Texture & Mid-Section Standalone Motifs for Depth & Consistency */}
+      <div className="pointer-events-none absolute top-8 left-6 opacity-35">
         <LeafSprigMotif className="h-10 w-10 -rotate-45 text-[#4d684f]" />
       </div>
-      <div className="pointer-events-none absolute bottom-12 right-6 opacity-30">
-        <BirdMotif className="h-8 w-8 rotate-12 text-[#4d684f]" />
+      <div className="pointer-events-none absolute bottom-12 right-6 opacity-35">
+        <BirdMotif className="h-9 w-9 rotate-12 text-[#4d684f]" />
       </div>
-      <div className="pointer-events-none absolute top-14 right-10 opacity-25">
+      <div className="pointer-events-none absolute top-14 right-10 opacity-30">
         <CornerDoveMotif className="h-12 w-12 text-[#4d684f]" />
       </div>
-      <div className="pointer-events-none absolute bottom-24 left-8 opacity-20">
-        <FloatingHeartMotif className="h-6 w-6 text-[#b88636]" />
+      <div className="pointer-events-none absolute bottom-24 left-8 opacity-30">
+        <FloatingHeartMotif className="h-7 w-7 text-[#b88636]" />
       </div>
 
-      {/* Mid-Section Standalone Motifs for Depth & Consistency */}
-      <div className="pointer-events-none absolute top-1/3 left-8 opacity-25">
-        <BirdMotif className="h-7 w-7 -rotate-12 text-[#4d684f]" />
+      {/* Mid-Section Standalone Motifs for Visual Depth */}
+      <div className="pointer-events-none absolute top-1/3 left-6 opacity-35">
+        <BirdMotif className="h-8 w-8 -rotate-12 text-[#4d684f]" />
       </div>
-      <div className="pointer-events-none absolute top-1/2 right-8 opacity-20">
-        <FloatingHeartMotif className="h-7 w-7 rotate-12 text-[#b88636]" />
+      <div className="pointer-events-none absolute top-1/2 right-6 opacity-30">
+        <FloatingHeartMotif className="h-8 w-8 rotate-12 text-[#b88636]" />
       </div>
-      <div className="pointer-events-none absolute top-28 right-1/4 opacity-20">
-        <LeafSprigMotif className="h-8 w-8 rotate-45 text-[#4d684f]" />
+      <div className="pointer-events-none absolute top-28 right-1/4 opacity-30">
+        <LeafSprigMotif className="h-9 w-9 rotate-45 text-[#4d684f]" />
+      </div>
+      <div className="pointer-events-none absolute bottom-1/3 left-10 opacity-30">
+        <CornerDoveMotif className="h-10 w-10 rotate-45 text-[#4d684f]" />
       </div>
 
-      {/* Confetti Dot Accents */}
-      <div className="pointer-events-none absolute top-1/4 left-1/5 h-1.5 w-1.5 rounded-full bg-[#4d684f]/25" />
-      <div className="pointer-events-none absolute top-1/3 right-1/4 h-1.5 w-1.5 rounded-full bg-[#b88636]/30" />
-      <div className="pointer-events-none absolute bottom-1/3 left-1/3 h-1.5 w-1.5 rounded-full bg-[#4d684f]/25" />
+      {/* Confetti & Floral Dot Accents */}
+      <div className="pointer-events-none absolute top-1/4 left-1/5 h-2 w-2 rounded-full bg-[#4d684f]/30" />
+      <div className="pointer-events-none absolute top-1/3 right-1/4 h-2 w-2 rounded-full bg-[#b88636]/35" />
+      <div className="pointer-events-none absolute bottom-1/3 left-1/3 h-2 w-2 rounded-full bg-[#4d684f]/30" />
+      <div className="pointer-events-none absolute bottom-1/4 right-1/5 h-2 w-2 rounded-full bg-[#b88636]/30" />
 
       {/* 1 & 2. Top Header Accent & Expanded Ornamental Divider */}
       <Reveal>
@@ -473,9 +501,37 @@ export function RsvpSection() {
 
       {/* Main Invitation Card Container — Elevated Double-Line Gold Border */}
       <Reveal delay={100}>
-        <div className="relative mx-auto mt-8 max-w-sm rounded-2xl border-2 border-[#b88636]/60 bg-[#fcfaf5] p-1 shadow-lg backdrop-blur-sm">
+        <div className={`relative mx-auto mt-8 max-w-sm rounded-2xl border-2 border-[#b88636]/60 bg-[#fcfaf5] p-1 shadow-lg backdrop-blur-sm transition-all duration-500 ${isCelebrating ? "animate-celebrate-bounce shadow-2xl border-[#b88636]" : ""}`}>
           {/* Inner Frame */}
           <div className="relative rounded-xl border border-[#b88636]/40 bg-[#faf6ef]/90 p-7 text-center overflow-hidden">
+            {/* Celebratory Olive & Gold Confetti Particle Burst Overlay */}
+            {isCelebrating && (
+              <div className="pointer-events-none absolute inset-0 z-30 overflow-hidden flex items-center justify-center">
+                {confettiParticles.map((p) => (
+                  <div
+                    key={p.id}
+                    className="absolute animate-confetti-particle flex items-center justify-center"
+                    style={{
+                      "--tx": `${p.tx}px`,
+                      "--ty": `${p.ty}px`,
+                      "--tr": `${p.tr}deg`,
+                      width: `${p.size}px`,
+                      height: `${p.size}px`,
+                    } as React.CSSProperties}
+                  >
+                    {p.isHeart ? (
+                      <FloatingHeartMotif className="h-3.5 w-3.5 text-[#b88636]" />
+                    ) : (
+                      <span
+                        className="rounded-full h-full w-full block"
+                        style={{ backgroundColor: p.color }}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* Unified Continuous Background Watermark Scene */}
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-2 opacity-15 mix-blend-multiply">
               <img
@@ -591,10 +647,10 @@ export function RsvpSection() {
         </div>
       </Reveal>
 
-      {/* Visual Color-Thread Continuity Connector ("Invitation -> Your Journey to Us") */}
+      {/* Visual Organic Connective Olive Branch ("Invitation -> Your Journey to Us") */}
       <Reveal delay={150}>
-        <div className="flex justify-center -mt-6 -mb-6 relative z-20 pointer-events-none">
-          <JourneyThreadConnector />
+        <div className="flex justify-center -mt-4 -mb-5 relative z-20 pointer-events-none">
+          <ConnectiveOliveBranch />
         </div>
       </Reveal>
 
@@ -606,9 +662,13 @@ export function RsvpSection() {
             alt="Journey to Udaipur Wedding"
             className="mx-auto h-auto w-full max-w-[300px] pointer-events-none select-none"
           />
-          <p className="mt-3 font-serif italic text-xs text-[#4d684f]">
-            "A celebratory journey through Udaipur to Aanya & Rahul's wedding mandap."
-          </p>
+          <div className="mt-3 flex items-center justify-center gap-2">
+            <span className="h-[1px] w-6 bg-gradient-to-r from-transparent to-[#b88636]/50" />
+            <p className="font-serif italic text-xs tracking-wide text-[#4d684f]/90">
+              "A <span className="not-italic font-medium text-[#b88636]">celebratory journey</span> through <span className="not-italic font-medium text-[#b88636]">Udaipur</span> to Aanya & Rahul's wedding mandap."
+            </p>
+            <span className="h-[1px] w-6 bg-gradient-to-l from-transparent to-[#b88636]/50" />
+          </div>
         </div>
       </Reveal>
     </section>

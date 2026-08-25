@@ -76,12 +76,20 @@ export const wedding = {
     address: "Lake Palace Road, Udaipur, Rajasthan 313001",
     mapsQuery: "Lake Palace Road, Udaipur, Rajasthan 313001",
     transport:
-      "Udaipur (UDR) airport is 45 minutes from the venue. Shuttles run from the two hotels below at 15:15 and 15:45 on the wedding day. Parking is available at the north gate.",
-    hotels: [
-      { name: "The Lily Haveli", desc: "Heritage rooms overlooking the lake.", distance: "5 min walk", code: "AANYARAHUL10", url: "https://example.com" },
-      { name: "Amara Residency", desc: "Comfortable, modern and family friendly.", distance: "10 min drive", code: "YESH2026", url: "https://example.com" },
-    ],
-    tips: "December evenings are cool by the water — bring a shawl. Book early, rooms in the old city fill up fast.",
+      "Shuttles run from the city center pick-up points at 15:15 and 15:45 on the wedding day. Guest parking is available at the north gate.",
+    byAir: {
+      title: "By Air",
+      name: "Maharana Pratap Airport, Udaipur (UDR)",
+      distance: "45 mins drive",
+      desc: "Direct flights arrive daily from Delhi, Mumbai, Jaipur, and Bengaluru. Pre-paid airport taxis and cabs are readily available at the arrivals terminal.",
+    },
+    byRail: {
+      title: "By Rail",
+      name: "Udaipur City Railway Station (UDZ)",
+      distance: "10 mins drive",
+      desc: "Well connected via superfast trains including Mewar Express (Delhi) and BDTS HAPA Express (Mumbai). Auto-rickshaws and taxis are available 24/7 at the main exit.",
+    },
+    tips: "December evenings are cool by the water — bring a warm shawl. Book your flights and trains early as December is peak season in Udaipur.",
   },
   contacts: [
     { role: "Bride", name: "Aanya", phone: "+919876543210", whatsapp: true, email: "aanya@example.com" },

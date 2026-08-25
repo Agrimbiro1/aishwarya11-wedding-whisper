@@ -210,6 +210,18 @@ export function InvitationGate({ onOpen }: { onOpen: () => void }) {
         opening ? "scale-105 opacity-0 pointer-events-none" : "scale-100 opacity-100"
       }`}
     >
+      {/* Background Botanical Line-Art Motifs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-35 z-0" aria-hidden="true">
+        <svg className="absolute -top-4 -left-4 w-36 h-36 text-accent/50 fill-none stroke-current" strokeWidth="0.8" viewBox="0 0 100 100">
+          <path d="M10 90 Q 30 50, 90 10" />
+          <path d="M30 70 Q 20 50, 35 45 M45 55 Q 35 35, 50 30 M60 40 Q 50 20, 65 15 M75 25 Q 65 5, 80 0" />
+        </svg>
+        <svg className="absolute -bottom-4 -right-4 w-36 h-36 text-accent/50 fill-none stroke-current scale-[-1]" strokeWidth="0.8" viewBox="0 0 100 100">
+          <path d="M10 90 Q 30 50, 90 10" />
+          <path d="M30 70 Q 20 50, 35 45 M45 55 Q 35 35, 50 30 M60 40 Q 50 20, 65 15 M75 25 Q 65 5, 80 0" />
+        </svg>
+      </div>
+
       {/* Ambient Floating Petals */}
       <FloatingPetals />
 
