@@ -748,9 +748,11 @@ export function ThankYouSection() {
           {wedding.thankYou.message}
         </p>
         {wedding.thankYou.attribution && (
-          <p className="mt-12 text-[0.6rem] uppercase tracking-[0.28em] text-muted-foreground/70">
-            Made with Digital Yesh
-          </p>
+          <div className="mt-12 flex items-center justify-center gap-1.5 font-sans text-[0.66rem] uppercase tracking-[0.26em] text-muted-foreground/75 font-medium">
+            <span>Made with</span>
+            <Heart className="h-3 w-3 stroke-[1.8] text-[#c45b5b] fill-[#c45b5b]/30 inline-block animate-pulse" />
+            <span>for {names}</span>
+          </div>
         )}
       </Reveal>
     </section>
