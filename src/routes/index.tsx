@@ -100,9 +100,11 @@ function Invitation() {
             {wedding.sections.travel && <TravelSection />}
             {wedding.sections.contact && <ContactSection />}
             <ThankYouSection />
-            <MusicToggle on={music} onToggle={() => setMusic((m) => !m)} />
           </>
         )}
+
+        {/* Music Player Bar (Present site-wide throughout every section) */}
+        <MusicToggle on={music} onToggle={() => setMusic((m) => !m)} />
       </main>
     </PhoneFrame>
   );
