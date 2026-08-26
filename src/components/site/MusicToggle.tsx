@@ -39,13 +39,6 @@ function extractYouTubeId(url: string): string | null {
   return match && match[1] ? match[1] : null;
 }
 
-/** Extract Spotify Track ID from link */
-function extractSpotifyTrackId(url: string): string | null {
-  if (!url) return null;
-  const match = url.match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?track\/([a-zA-Z0-9]+)/);
-  return match && match[1] ? match[1] : null;
-}
-
 /** Format clean audio filename from web URL path */
 function extractAudioTitleFromUrl(url: string): string {
   try {
@@ -57,11 +50,6 @@ function extractAudioTitleFromUrl(url: string): string {
     }
   } catch {}
   return "Custom Audio Stream";
-}
-
-/** Check if link is SoundCloud */
-function isSoundCloudUrl(url: string): boolean {
-  return Boolean(url && url.includes("soundcloud.com"));
 }
 
 /** Auto-convert Google Drive, Dropbox & cloud share links to raw direct audio stream URLs */
@@ -96,21 +84,15 @@ function getInitialAudioState() {
 
     if (savedUrl) {
       const ytId = extractYouTubeId(savedUrl);
-      const spotifyId = extractSpotifyTrackId(savedUrl);
-      const isSc = isSoundCloudUrl(savedUrl);
 
       let songName = savedTitle || "Custom Audio";
-      if (spotifyId && !savedTitle) songName = "Spotify Audio Track";
-      else if (ytId && !savedTitle) songName = "YouTube Music Track";
-      else if (isSc && !savedTitle) songName = "SoundCloud Track";
+      if (ytId && !savedTitle) songName = "YouTube Music Track";
       else if (!savedTitle) songName = extractAudioTitleFromUrl(savedUrl);
 
       return {
         url: savedUrl,
         title: songName,
         ytId,
-        spotifyId,
-        soundCloudUrl: isSc ? savedUrl : null,
       };
     }
   } catch {}
@@ -119,8 +101,6 @@ function getInitialAudioState() {
     url: null,
     title: "Default Music",
     ytId: null,
-    spotifyId: null,
-    soundCloudUrl: null,
   };
 }
 
@@ -139,10 +119,6 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
   const [volume, setVolume] = useState(0.7);
 
   const [ytVideoId, setYtVideoId] = useState<string | null>(initialAudioState.ytId);
-  const [spotifyTrackId, setSpotifyTrackId] = useState<string | null>(initialAudioState.spotifyId);
-  const [soundCloudUrl, setSoundCloudUrl] = useState<string | null>(initialAudioState.soundCloudUrl);
-
-  const [showSpotifyEmbed, setShowSpotifyEmbed] = useState(true);
   const [audioError, setAudioError] = useState<string | null>(null);
 
   const activeSrc = customAudioUrl ? normalizeAudioUrl(customAudioUrl) : audioSrc;
@@ -182,8 +158,8 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
   useEffect(() => {
     raabtaAudioEngine.setVolume(volume);
 
-    // If using iframe embeds (YouTube / Spotify / SoundCloud), pause standard audio element immediately
-    if (ytVideoId || spotifyTrackId || soundCloudUrl) {
+    // If using YouTube iframe embed, pause standard audio element immediately
+    if (ytVideoId) {
       if (globalAudioInstance) {
         globalAudioInstance.pause();
         globalAudioInstance.currentTime = 0;
@@ -223,7 +199,7 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
       audio.pause();
       raabtaAudioEngine.stop();
     }
-  }, [on, activeSrc, ytVideoId, spotifyTrackId, soundCloudUrl, volume]);
+  }, [on, activeSrc, ytVideoId, volume]);
 
   function handleVolumeUp(e: React.MouseEvent) {
     e.preventDefault();
@@ -253,26 +229,10 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
     }
     raabtaAudioEngine.stop();
 
-    // 1. Check if link is a Spotify Link
-    const extractedSpotifyId = extractSpotifyTrackId(rawUrl);
-    if (extractedSpotifyId) {
-      setSpotifyTrackId(extractedSpotifyId);
-      setShowSpotifyEmbed(true);
-      setYtVideoId(null);
-      setSoundCloudUrl(null);
-      setCustomAudioUrl(rawUrl);
-
-      if (!on) onToggle();
-      setShowModal(false);
-      return;
-    }
-
-    // 2. Check if link is a YouTube Link
+    // 1. Check if link is a YouTube Link
     const extractedYtId = extractYouTubeId(rawUrl);
     if (extractedYtId) {
       setYtVideoId(extractedYtId);
-      setSpotifyTrackId(null);
-      setSoundCloudUrl(null);
       setCustomAudioUrl(rawUrl);
 
       if (!on) onToggle();
@@ -280,22 +240,8 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
       return;
     }
 
-    // 3. Check if link is SoundCloud
-    if (isSoundCloudUrl(rawUrl)) {
-      setSoundCloudUrl(rawUrl);
-      setYtVideoId(null);
-      setSpotifyTrackId(null);
-      setCustomAudioUrl(rawUrl);
-
-      if (!on) onToggle();
-      setShowModal(false);
-      return;
-    }
-
-    // 4. Otherwise, handle as standard Audio stream (Google Drive / Dropbox / Direct MP3)
+    // 2. Otherwise, handle as standard Audio stream (Google Drive / Dropbox / Direct MP3)
     setYtVideoId(null);
-    setSpotifyTrackId(null);
-    setSoundCloudUrl(null);
 
     const url = normalizeAudioUrl(rawUrl);
     setCustomAudioUrl(url);
@@ -320,7 +266,7 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
         })
         .catch((err) => {
           console.warn("Audio play error for URL:", url, err);
-          setAudioError("Streaming audio... if it's blocked, try YouTube, Spotify, Google Drive, or Upload MP3!");
+          setAudioError("Streaming audio... if it's blocked, try YouTube, Google Drive, or Upload MP3!");
           raabtaAudioEngine.start();
         });
     }
@@ -332,8 +278,6 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
     const file = e.target.files?.[0];
     if (file) {
       setYtVideoId(null);
-      setSpotifyTrackId(null);
-      setSoundCloudUrl(null);
 
       const blobUrl = URL.createObjectURL(file);
       const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
@@ -358,13 +302,10 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
   function handleSaveUrl() {
     if (inputUrlText.trim()) {
       const rawUrl = inputUrlText.trim();
-      const spotifyId = extractSpotifyTrackId(rawUrl);
       const ytId = extractYouTubeId(rawUrl);
 
       let derivedTitle = extractAudioTitleFromUrl(rawUrl);
-      if (spotifyId) {
-        derivedTitle = "Spotify Audio Track";
-      } else if (ytId) {
+      if (ytId) {
         derivedTitle = "YouTube Music Track";
       }
 
@@ -379,8 +320,6 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
     } catch {}
 
     setYtVideoId(null);
-    setSpotifyTrackId(null);
-    setSoundCloudUrl(null);
     setCustomAudioUrl(null);
     setSongName("Default Music");
     setAudioError(null);
@@ -427,43 +366,7 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
         />
       )}
 
-      {/* Spotify Embed Player Card */}
-      {spotifyTrackId && on && showSpotifyEmbed && (
-        <div className="fixed bottom-24 right-5 z-[9999] max-w-xs rounded-2xl border border-amber-200/40 bg-black/90 p-2 shadow-2xl backdrop-blur-md animate-fade-in">
-          <div className="flex items-center justify-between px-2 pb-1.5 text-xs text-amber-100">
-            <span className="flex items-center gap-1.5 font-medium text-[0.68rem] text-emerald-400">
-              <Disc className="h-3.5 w-3.5 animate-spin" /> Spotify Player
-            </span>
-            <button
-              onClick={() => setShowSpotifyEmbed(false)}
-              className="rounded-full p-0.5 text-amber-200/60 hover:text-amber-100"
-            >
-              <X className="h-3.5 w-3.5" />
-            </button>
-          </div>
-          <iframe
-            src={`https://open.spotify.com/embed/track/${spotifyTrackId}?utm_source=generator&theme=0`}
-            width="280"
-            height="80"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            className="rounded-xl"
-            title="Spotify Audio Player"
-          />
-        </div>
-      )}
-
-      {/* SoundCloud Embed Player Card */}
-      {soundCloudUrl && on && (
-        <iframe
-          className="pointer-events-none fixed -top-[9999px] -left-[9999px] h-1 w-1 opacity-0"
-          src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(soundCloudUrl)}&auto_play=true`}
-          allow="autoplay"
-          title="SoundCloud Audio Player"
-        />
-      )}
-
-      {/* Permanently Sticky Control Badge in Bottom-Right Corner (Never hides centered date, stays fixed on scroll) */}
+      {/* Permanently Sticky Control Badge in Bottom-Right Corner */}
       <div className="fixed bottom-6 right-5 z-[9999] flex flex-col items-end gap-1.5 animate-fade-in pointer-events-auto">
         {/* Main Floating Round Play/Mute Button */}
         <button
@@ -511,7 +414,11 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
             {/* Currently Active Song & Volume Controls */}
             <div className="mt-3 rounded-2xl border border-amber-200/30 bg-black/60 p-3.5 flex flex-col gap-3">
               <div className="flex items-center gap-3">
-                <Disc className="h-5 w-5 text-amber-300 animate-spin shrink-0" style={{ animationDuration: "3s" }} />
+                {ytVideoId ? (
+                  <Youtube className="h-5 w-5 text-red-400 animate-pulse shrink-0" />
+                ) : (
+                  <Disc className="h-5 w-5 text-amber-300 animate-spin shrink-0" style={{ animationDuration: "3s" }} />
+                )}
                 <div className="flex flex-col min-w-0 flex-1">
                   <span className="text-[0.58rem] uppercase tracking-[0.2em] font-medium text-amber-300/80">
                     CURRENTLY PLAYING
@@ -550,7 +457,7 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
             </div>
 
             <p className="mt-3 text-xs leading-relaxed text-amber-200/80 font-sans">
-              Paste <strong>ANY song link from ANY platform</strong> (YouTube, Spotify, Gaana, SoundCloud, Apple Music, Google Drive):
+              Paste <strong>ANY song link from YouTube, Google Drive, or audio cloud</strong>:
             </p>
 
             {audioError && (
@@ -563,12 +470,12 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
             {/* Option A: Paste Universal Music Link */}
             <div className="mt-4">
               <label className="text-[0.68rem] uppercase tracking-wider text-amber-200/80 font-medium block mb-1">
-                Paste Song Link (YouTube, Spotify, SoundCloud, etc.):
+                Paste Song Link (YouTube, Google Drive, Direct Audio):
               </label>
               <div className="flex gap-2">
                 <input
                   type="text"
-                  placeholder="https://music.youtube.com/watch?v=... or Spotify link"
+                  placeholder="https://music.youtube.com/watch?v=... or direct MP3 URL"
                   value={inputUrlText}
                   onChange={(e) => setInputUrlText(e.target.value)}
                   className="flex-1 rounded-xl border border-amber-200/30 bg-black/50 px-3 py-2 text-xs text-amber-100 focus:border-amber-300 focus:outline-hidden placeholder:text-amber-200/30"
@@ -585,9 +492,8 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
               {/* Supported Platforms Pill Bar */}
               <div className="mt-2 flex flex-wrap gap-1.5 text-[0.6rem] text-amber-200/70">
                 <span className="rounded-md bg-red-950/60 border border-red-500/30 px-1.5 py-0.5 text-red-300">YouTube</span>
-                <span className="rounded-md bg-emerald-950/60 border border-emerald-500/30 px-1.5 py-0.5 text-emerald-300">Spotify</span>
-                <span className="rounded-md bg-orange-950/60 border border-orange-500/30 px-1.5 py-0.5 text-orange-300">SoundCloud</span>
                 <span className="rounded-md bg-amber-950/60 border border-amber-500/30 px-1.5 py-0.5 text-amber-300">Google Drive</span>
+                <span className="rounded-md bg-blue-950/60 border border-blue-500/30 px-1.5 py-0.5 text-blue-300">Dropbox</span>
               </div>
             </div>
 
@@ -611,7 +517,7 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
               </code>
             </div>
 
-            {(customAudioUrl || ytVideoId || spotifyTrackId || soundCloudUrl) && (
+            {(customAudioUrl || ytVideoId) && (
               <button
                 onClick={handleResetToDefault}
                 className="mt-4 flex items-center justify-center gap-1.5 w-full text-center text-[0.68rem] text-amber-300/60 hover:text-amber-300 underline"
