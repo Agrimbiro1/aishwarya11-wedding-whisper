@@ -117,7 +117,7 @@ function getInitialAudioState() {
 
   return {
     url: null,
-    title: "Kehte Hain Khuda Ne • Raabta",
+    title: "Default Music",
     ytId: null,
     spotifyId: null,
     soundCloudUrl: null,
@@ -382,7 +382,7 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
     setSpotifyTrackId(null);
     setSoundCloudUrl(null);
     setCustomAudioUrl(null);
-    setSongName("Kehte Hain Khuda Ne • Raabta");
+    setSongName("Default Music");
     setAudioError(null);
 
     const audio = getOrCreateAudioElement(audioSrc);
@@ -468,8 +468,8 @@ export function MusicToggle({ on, onToggle, audioSrc = defaultMusicUrl }: MusicT
         {/* Main Floating Round Play/Mute Button */}
         <button
           onClick={onToggle}
-          aria-label={on ? "Mute music" : "Play Kehte Hain Khuda Ne (Raabta)"}
-          title={on ? "Mute music" : "Play Kehte Hain Khuda Ne (Raabta)"}
+          aria-label={on ? "Mute music" : "Play default music"}
+          title={on ? "Mute music" : "Play default music"}
           className="flex h-11 w-11 items-center justify-center rounded-full border border-amber-200/50 bg-black/90 text-amber-100 shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-black hover:scale-105 active:scale-95 group cursor-pointer"
         >
           {on ? (
